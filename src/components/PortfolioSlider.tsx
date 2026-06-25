@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
-import type { CaseItem } from "@/lib/content";
+import type { CaseItem } from "@/lib/content-types";
 
 export default function PortfolioSlider({ items }: { items: CaseItem[] }) {
   const trackRef = useRef<HTMLDivElement>(null);

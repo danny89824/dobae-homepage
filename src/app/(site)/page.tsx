@@ -1,13 +1,13 @@
 import Link from "next/link";
 import FaqAccordion from "@/components/FaqAccordion";
 import PortfolioSlider from "@/components/PortfolioSlider";
-import { SITE, TRUST, REGIONS } from "@/lib/site";
-import { CASES, PROCESS } from "@/lib/content";
+import { getContent } from "@/lib/content-store";
+import { telHref } from "@/lib/content-types";
 
-const HERO_IMG =
-  "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=2000&q=70";
+export default async function Home() {
+  const c = await getContent();
+  const { hero, site, trust, regions, cases, process, faq } = c;
 
-export default function Home() {
   return (
     <>
       {/* ===== HERO ===== */}
@@ -15,7 +15,7 @@ export default function Home() {
         <div className="absolute inset-0">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={HERO_IMG}
+            src={hero.image}
             alt="정성껏 도배를 마친 따뜻한 거실"
             className="w-full h-full object-cover kenburns"
           />
@@ -23,14 +23,14 @@ export default function Home() {
         </div>
 
         <div className="container-x relative pb-16 md:pb-24 pt-32 text-white">
-          <p className="eyebrow !text-white/80 reveal">Since 2021 · 도배청년단</p>
+          <p className="eyebrow !text-white/80 reveal">{hero.eyebrow}</p>
           <h1 className="reveal reveal-delay-1 mt-4 text-[2.6rem] leading-[1.1] sm:text-6xl md:text-7xl font-extrabold tracking-tight max-w-4xl">
-            도배의 바른 기준,
+            {hero.headlineLine1}
             <br />
-            도배청년단
+            {hero.headlineLine2}
           </h1>
           <p className="reveal reveal-delay-2 mt-5 text-lg md:text-xl text-white/85 max-w-xl">
-            {SITE.sub} 가격은 먼저 공개하고, 책임은 문서로 남깁니다.
+            {hero.sub}
           </p>
           <div className="reveal reveal-delay-3 mt-8 flex flex-wrap gap-3">
             <Link href="/estimate" className="btn btn-accent !px-7 text-base">
@@ -42,7 +42,7 @@ export default function Home() {
           </div>
 
           <div className="reveal reveal-delay-4 mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/20 pt-6 max-w-2xl">
-            {TRUST.map((t) => (
+            {trust.map((t) => (
               <div key={t.label} className="flex items-baseline gap-2">
                 <span className="text-2xl md:text-3xl font-extrabold num-label">{t.value}</span>
                 <span className="text-xs md:text-sm text-white/70">{t.label}</span>
@@ -82,7 +82,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== 시공사례 (가로 스크롤) ===== */}
+      {/* ===== 시공사례 (슬라이더) ===== */}
       <section className="py-20 md:py-28">
         <div className="container-x">
           <div className="flex items-end justify-between gap-4 reveal">
@@ -102,7 +102,7 @@ export default function Home() {
         </div>
 
         <div className="mt-10">
-          <PortfolioSlider items={CASES} />
+          <PortfolioSlider items={cases} />
         </div>
         <div className="container-x mt-6 sm:hidden">
           <Link href="/portfolio" className="btn btn-outline w-full">
@@ -164,7 +164,7 @@ export default function Home() {
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
-            {PROCESS.map((p, i) => (
+            {process.map((p, i) => (
               <div key={p.no} className={`rounded-2xl bg-paper border border-line p-6 reveal reveal-delay-${(i % 3) + 1}`}>
                 <span className="num-label text-accent font-extrabold text-2xl">{p.no}</span>
                 <h3 className="font-bold text-lg mt-2">{p.title}</h3>
@@ -183,7 +183,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold mt-2.5">자주 묻는 질문</h2>
           </div>
           <div className="mt-10 reveal">
-            <FaqAccordion />
+            <FaqAccordion items={faq} />
           </div>
         </div>
       </section>
@@ -197,15 +197,15 @@ export default function Home() {
             제대로 시작해 볼까요
           </h2>
           <p className="text-on-dark-sub mt-5 max-w-md mx-auto">
-            {REGIONS.join(" · ")} 시공 가능. <br className="sm:hidden" />
+            {regions.join(" · ")} 시공 가능. <br className="sm:hidden" />
             가격부터 확인하고, 편하게 상담하세요.
           </p>
           <div className="mt-8 flex flex-wrap gap-3 justify-center">
             <Link href="/estimate" className="btn btn-accent !px-8 text-base">
               간편견적 받기 →
             </Link>
-            <a href={SITE.phoneHref} className="btn btn-ghost-light !px-8 text-base">
-              전화 상담 {SITE.phone}
+            <a href={telHref(site.phone)} className="btn btn-ghost-light !px-8 text-base">
+              전화 상담 {site.phone}
             </a>
           </div>
         </div>

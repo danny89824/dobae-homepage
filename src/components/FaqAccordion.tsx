@@ -1,12 +1,12 @@
 "use client";
 import { useState } from "react";
-import { FAQ } from "@/lib/content";
+import type { Faq } from "@/lib/content-types";
 
-export default function FaqAccordion() {
+export default function FaqAccordion({ items }: { items: Faq[] }) {
   const [open, setOpen] = useState<number | null>(0);
   return (
     <div className="divide-y divide-line border-y border-line">
-      {FAQ.map((f, i) => {
+      {items.map((f, i) => {
         const isOpen = open === i;
         return (
           <div key={i}>

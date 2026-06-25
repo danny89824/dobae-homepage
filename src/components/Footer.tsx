@@ -1,8 +1,15 @@
 import Link from "next/link";
 import Logo from "./Logo";
-import { NAV, SITE, REGIONS } from "@/lib/site";
+import { NAV } from "@/lib/site";
+import { telHref, type SiteInfo } from "@/lib/content-types";
 
-export default function Footer() {
+export default function Footer({
+  site,
+  regions,
+}: {
+  site: SiteInfo;
+  regions: string[];
+}) {
   return (
     <footer className="bg-dark text-on-dark">
       <div className="container-x py-16 md:py-20">
@@ -14,7 +21,7 @@ export default function Footer() {
               직접 고용한 청년 시공단이 만드는 정직한 도배.
             </p>
             <div className="mt-6 flex flex-wrap gap-2">
-              {REGIONS.map((r) => (
+              {regions.map((r) => (
                 <span
                   key={r}
                   className="text-xs px-2.5 py-1 rounded-full border border-white/15 text-on-dark-sub"
@@ -41,14 +48,14 @@ export default function Footer() {
           <div>
             <p className="eyebrow !text-gold mb-4">Contact</p>
             <a
-              href={SITE.phoneHref}
+              href={telHref(site.phone)}
               className="block text-2xl font-bold num-label tracking-tight"
             >
-              {SITE.phone}
+              {site.phone}
             </a>
             <p className="mt-2 text-on-dark-sub text-sm">평일 09:00 – 18:00 상담</p>
             <a
-              href={SITE.kakaoChannel}
+              href={site.kakaoChannel}
               target="_blank"
               rel="noreferrer"
               className="mt-4 inline-flex btn btn-accent !py-2.5 !px-5 text-sm"
@@ -60,8 +67,8 @@ export default function Footer() {
 
         <div className="mt-14 pt-6 border-t border-white/10 flex flex-col sm:flex-row gap-2 sm:items-center justify-between text-xs text-on-dark-sub">
           <p>
-            {SITE.name} · 법인 {SITE.legal} &nbsp;|&nbsp; © {SITE.copyrightYear}{" "}
-            {SITE.name}. All rights reserved.
+            도배청년단 · 법인 {site.legal} &nbsp;|&nbsp; © {site.copyrightYear} 도배청년단. All
+            rights reserved.
           </p>
           <p className="opacity-70">도배의 바른 기준</p>
         </div>

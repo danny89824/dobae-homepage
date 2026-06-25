@@ -1,13 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { PAPER_TYPES, PROCESS } from "@/lib/content";
+import { getContent } from "@/lib/content-store";
 
 export const metadata: Metadata = {
   title: "도배 안내 — 도배지 종류와 시공 과정",
   description: "합지·실크·광폭합지의 차이와 추천 용도, 간편견적부터 1년 무상 A/S까지 도배청년단의 6단계 시공 과정 안내.",
 };
 
-export default function GuidePage() {
+export default async function GuidePage() {
+  const { paperTypes: PAPER_TYPES, process: PROCESS } = await getContent();
   return (
     <>
       <section className="pt-28 md:pt-32 pb-10 bg-soft border-b border-line">

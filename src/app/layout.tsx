@@ -1,8 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import ScrollReveal from "@/components/ScrollReveal";
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://dobaeym.com"),
@@ -27,12 +24,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ko" data-scroll-behavior="smooth" className="h-full">
-      <body className="min-h-full flex flex-col bg-paper text-ink">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
-        <ScrollReveal />
-      </body>
+      <body className="min-h-full flex flex-col bg-paper text-ink">{children}</body>
     </html>
   );
 }

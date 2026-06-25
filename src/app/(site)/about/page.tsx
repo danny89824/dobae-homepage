@@ -1,13 +1,15 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { SITE, TRUST, REGIONS } from "@/lib/site";
+import { getContent } from "@/lib/content-store";
+import { telHref } from "@/lib/content-types";
 
 export const metadata: Metadata = {
   title: "회사소개 — 도배청년단",
   description: "도배의 바른 기준을 만드는 도배청년단. 직접 고용한 청년 시공단, 영업배상책임보험, 1년 무상 A/S. 서울·경기 도배 전문.",
 };
 
-export default function AboutPage() {
+export default async function AboutPage() {
+  const { site: SITE, trust: TRUST, regions: REGIONS } = await getContent();
   return (
     <>
       <section className="pt-28 md:pt-32 pb-10 bg-soft border-b border-line">
@@ -76,7 +78,7 @@ export default function AboutPage() {
               <div className="flex gap-4">
                 <dt className="w-20 shrink-0 text-sub text-sm">전화</dt>
                 <dd className="font-semibold num-label">
-                  <a href={SITE.phoneHref} className="link-underline">{SITE.phone}</a>
+                  <a href={telHref(SITE.phone)} className="link-underline">{SITE.phone}</a>
                 </dd>
               </div>
               <div className="flex gap-4">
@@ -106,7 +108,7 @@ export default function AboutPage() {
             <div className="mt-6 grid gap-3">
               <Link href="/estimate" className="btn btn-accent w-full">간편견적 받기 →</Link>
               <Link href="/finder" className="btn btn-outline w-full">도배지 찾기</Link>
-              <a href={SITE.phoneHref} className="btn btn-primary w-full">전화 상담 {SITE.phone}</a>
+              <a href={telHref(SITE.phone)} className="btn btn-primary w-full">전화 상담 {SITE.phone}</a>
             </div>
           </div>
         </div>

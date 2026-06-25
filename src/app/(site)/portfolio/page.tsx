@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { CASES } from "@/lib/content";
-import { REGIONS } from "@/lib/site";
+import { getContent } from "@/lib/content-store";
 
 export const metadata: Metadata = {
   title: "시공사례 — 도배청년단이 다녀간 공간",
   description: "서울·경기 2,000곳 이상의 실제 도배 시공 사례. 아파트·빌라·오피스텔 거실/침실/원룸 시공 포트폴리오.",
 };
 
-export default function PortfolioPage() {
+export default async function PortfolioPage() {
+  const { cases: CASES, regions: REGIONS } = await getContent();
   return (
     <>
       <section className="pt-28 md:pt-32 pb-10 bg-soft border-b border-line">

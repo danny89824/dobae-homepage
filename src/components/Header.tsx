@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Logo from "./Logo";
-import { NAV, ACTIONS, SITE } from "@/lib/site";
+import { NAV, ACTIONS } from "@/lib/site";
+import { telHref } from "@/lib/content-types";
 
-export default function Header() {
+export default function Header({ phone }: { phone: string }) {
   const [solid, setSolid] = useState(false);
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
@@ -67,12 +68,12 @@ export default function Header() {
         {/* 우측 액션 */}
         <div className="flex items-center gap-2">
           <a
-            href={SITE.phoneHref}
+            href={telHref(phone)}
             className={`hidden md:inline text-sm font-semibold num-label mr-1 ${
               isSolid ? "text-ink" : "text-white"
             }`}
           >
-            {SITE.phone}
+            {phone}
           </a>
           {ACTIONS.map((a) => (
             <Link
@@ -145,10 +146,10 @@ export default function Header() {
             </Link>
           </div>
           <a
-            href={SITE.phoneHref}
+            href={telHref(phone)}
             className="mt-3 text-center text-sm font-semibold num-label text-sub"
           >
-            전화 상담 {SITE.phone}
+            전화 상담 {phone}
           </a>
         </nav>
       </div>

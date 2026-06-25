@@ -3,11 +3,11 @@ import { useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { QUESTIONS, computeResult, type FinderResult } from "@/lib/finder";
 import { WP_LABEL } from "@/lib/price";
-import { SITE } from "@/lib/site";
+import { telHref } from "@/lib/content-types";
 
 type Phase = "intro" | "quiz" | "result";
 
-export default function FinderQuiz() {
+export default function FinderQuiz({ phone }: { phone: string }) {
   const [phase, setPhase] = useState<Phase>("intro");
   const [idx, setIdx] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number>>({});
@@ -66,7 +66,7 @@ export default function FinderQuiz() {
       )}
 
       {phase === "result" && result && (
-        <Result result={result} onRestart={restart} />
+        <Result result={result} onRestart={restart} phone={phone} />
       )}
     </div>
   );
@@ -171,7 +171,7 @@ function Question({
   );
 }
 
-function Result({ result, onRestart }: { result: FinderResult; onRestart: () => void }) {
+function Result({ result, onRestart, phone }: { result: FinderResult; onRestart: () => void; phone: string }) {
   const { wallpaper, grade, mood, productHint } = result;
   const estimateHref = `/estimate?wallpaper=${wallpaper}${
     wallpaper === "silk" ? `&grade=${encodeURIComponent(grade)}` : ""
@@ -234,7 +234,7 @@ function Result({ result, onRestart }: { result: FinderResult; onRestart: () => 
             <Link href={estimateHref} className="btn btn-accent flex-1">
               이 추천으로 간편견적 받기 →
             </Link>
-            <a href={SITE.phoneHref} className="btn btn-outline flex-1">
+            <a href={telHref(phone)} className="btn btn-outline flex-1">
               전화로 샘플 상담
             </a>
           </div>

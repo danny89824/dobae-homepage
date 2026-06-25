@@ -1,14 +1,15 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
 import EstimateWizard from "@/components/EstimateWizard";
-import { TRUST } from "@/lib/site";
+import { getContent } from "@/lib/content-store";
 
 export const metadata: Metadata = {
   title: "간편견적 — 전화 없이 가격부터",
   description: "공간과 평형, 벽지만 고르면 예상 도배 금액을 바로 확인하세요. 아파트·빌라·오피스텔 합지/실크 견적.",
 };
 
-export default function EstimatePage() {
+export default async function EstimatePage() {
+  const { trust: TRUST, site } = await getContent();
   return (
     <>
       <section className="pt-28 md:pt-32 pb-10 bg-soft border-b border-line">
@@ -35,7 +36,7 @@ export default function EstimatePage() {
       <section className="py-12 md:py-16">
         <div className="container-x max-w-3xl">
           <Suspense fallback={<div className="h-64 rounded-2xl bg-soft animate-pulse" />}>
-            <EstimateWizard />
+            <EstimateWizard phone={site.phone} kakao={site.kakaoChannel} />
           </Suspense>
         </div>
       </section>

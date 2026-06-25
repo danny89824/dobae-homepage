@@ -7,7 +7,7 @@ import {
   nextStep, totalSteps, progressPct, compute, methodLabel,
   type EstimateState, type Step, type Wallpaper, type Grade,
 } from "@/lib/price";
-import { SITE } from "@/lib/site";
+import { telHref } from "@/lib/content-types";
 
 const won = (man: number) => `${man.toLocaleString()}만원`;
 
@@ -33,7 +33,7 @@ interface Card {
   price?: string;
 }
 
-export default function EstimateWizard() {
+export default function EstimateWizard({ phone, kakao }: { phone: string; kakao: string }) {
   const params = useSearchParams();
   const [S, setS] = useState<EstimateState>({});
   const [history, setHistory] = useState<EstimateState[]>([]);
@@ -236,8 +236,8 @@ export default function EstimateWizard() {
 
       {isWizard && <StepCards step={step} cards={cards} S={S} onChoose={choose} />}
 
-      {step === "result" && <Result S={S} onReset={reset} />}
-      {step === "consult" && <Consult onReset={reset} />}
+      {step === "result" && <Result S={S} onReset={reset} phone={phone} kakao={kakao} />}
+      {step === "consult" && <Consult onReset={reset} phone={phone} kakao={kakao} />}
 
       {/* 뒤로 */}
       {(history.length > 0 || step === "result" || step === "consult") && (
@@ -315,7 +315,7 @@ function StepCards({
   );
 }
 
-function Result({ S, onReset }: { S: EstimateState; onReset: () => void }) {
+function Result({ S, onReset, phone, kakao }: { S: EstimateState; onReset: () => void; phone: string; kakao: string }) {
   const r = compute(S);
   const sz = PRICE.spaces[S.space!].sizes![S.size!];
   const sqm = sz.sqm ? ` (${sz.sqm})` : "";
@@ -365,14 +365,14 @@ function Result({ S, onReset }: { S: EstimateState; onReset: () => void }) {
         </div>
       </div>
 
-      <LeadForm S={S} />
+      <LeadForm S={S} bizPhone={phone} bizKakao={kakao} />
 
       <button onClick={onReset} className="sr-only">처음부터</button>
     </div>
   );
 }
 
-function LeadForm({ S }: { S: EstimateState }) {
+function LeadForm({ S, bizPhone, bizKakao }: { S: EstimateState; bizPhone: string; bizKakao: string }) {
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [region, setRegion] = useState("");
@@ -406,10 +406,10 @@ function LeadForm({ S }: { S: EstimateState }) {
           빠른 시간 내에 연락드리겠습니다. 더 빠른 상담은 전화·카카오채널로도 가능해요.
         </p>
         <div className="mt-4 flex flex-wrap gap-2 justify-center">
-          <a href={SITE.phoneHref} className="btn btn-primary !py-2.5 !px-5 text-sm">
-            전화 상담 {SITE.phone}
+          <a href={telHref(bizPhone)} className="btn btn-primary !py-2.5 !px-5 text-sm">
+            전화 상담 {bizPhone}
           </a>
-          <a href={SITE.kakaoChannel} target="_blank" rel="noreferrer" className="btn btn-outline !py-2.5 !px-5 text-sm">
+          <a href={bizKakao} target="_blank" rel="noreferrer" className="btn btn-outline !py-2.5 !px-5 text-sm">
             카카오채널
           </a>
         </div>
@@ -448,7 +448,7 @@ function LeadForm({ S }: { S: EstimateState }) {
   );
 }
 
-function Consult({ onReset }: { onReset: () => void }) {
+function Consult({ onReset, phone, kakao }: { onReset: () => void; phone: string; kakao: string }) {
   return (
     <div className="rounded-3xl border border-line bg-soft p-8 text-center">
       <p className="text-3xl">💬</p>
@@ -457,8 +457,8 @@ function Consult({ onReset }: { onReset: () => void }) {
         선택하신 공간은 현장 상황에 따라 견적 차이가 커서, 정확한 금액을 위해 직접 상담으로 도와드리는 것이 좋아요.
       </p>
       <div className="mt-6 flex flex-wrap gap-2 justify-center">
-        <a href={SITE.phoneHref} className="btn btn-primary !px-6">전화 상담 {SITE.phone}</a>
-        <a href={SITE.kakaoChannel} target="_blank" rel="noreferrer" className="btn btn-outline !px-6">
+        <a href={telHref(phone)} className="btn btn-primary !px-6">전화 상담 {phone}</a>
+        <a href={kakao} target="_blank" rel="noreferrer" className="btn btn-outline !px-6">
           카카오채널 상담
         </a>
       </div>
