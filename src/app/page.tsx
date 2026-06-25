@@ -1,5 +1,6 @@
 import Link from "next/link";
 import FaqAccordion from "@/components/FaqAccordion";
+import PortfolioSlider from "@/components/PortfolioSlider";
 import { SITE, TRUST, REGIONS } from "@/lib/site";
 import { CASES, PROCESS } from "@/lib/content";
 
@@ -100,31 +101,8 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-10 overflow-x-auto no-scrollbar">
-          <div className="container-x flex gap-4 snap-x snap-mandatory pb-2">
-            {CASES.map((c) => (
-              <article key={c.no} className="snap-start shrink-0 w-[78vw] xs:w-[60vw] sm:w-[340px] reveal">
-                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-soft group">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={c.img}
-                    alt={c.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <span className="absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-white/90 text-ink">
-                    {c.tag}
-                  </span>
-                </div>
-                <div className="mt-3.5">
-                  <h3 className="font-bold text-[1.05rem] leading-snug">{c.title}</h3>
-                  <p className="text-sm text-sub mt-1.5">
-                    {c.space} · {c.wallpaper} · {c.region}
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
+        <div className="mt-10">
+          <PortfolioSlider items={CASES} />
         </div>
         <div className="container-x mt-6 sm:hidden">
           <Link href="/portfolio" className="btn btn-outline w-full">
