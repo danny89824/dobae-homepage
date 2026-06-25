@@ -39,8 +39,11 @@
   --color-on-dark: var(--on-dark);
   --color-on-dark-sub: var(--on-dark-sub);
   --color-gold: var(--gold);
+  /* 한글: Pretendard → (Mac) Apple SD Gothic Neo → (Win) Malgun Gothic → Noto Sans KR
+     기호/이모지: Segoe UI Symbol·Emoji / Apple Color Emoji 로 폴백해 □(두부) 방지 */
   --font-sans: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
-    "Apple SD Gothic Neo", system-ui, sans-serif;
+    system-ui, "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", "Noto Sans KR",
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   --breakpoint-xs: 30rem;
 }
 
