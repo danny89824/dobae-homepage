@@ -273,6 +273,9 @@ function StepCards({
           <p className="eyebrow num-label">{t.eyebrow}</p>
           <h2 className="text-2xl md:text-[1.7rem] font-bold mt-1.5">{t.title}</h2>
           {t.sub && <p className="text-sub mt-1.5">{t.sub}</p>}
+          <p className="mt-3 inline-flex items-center gap-1.5 text-xs font-medium text-accent-ink bg-accent-soft px-3 py-1.5 rounded-full">
+            <span aria-hidden>👆</span> 항목을 누르면 다음 단계로 넘어가요
+          </p>
         </div>
       )}
       <div className={`grid gap-3 ${cols}`}>
@@ -282,35 +285,53 @@ function StepCards({
             <button
               key={c.value}
               onClick={() => onChoose(c.field, c.value)}
-              className={`text-left rounded-2xl border p-5 transition-all duration-200 hover:-translate-y-0.5 ${
-                selected ? "border-accent bg-accent-soft" : "border-line bg-paper hover:border-ink/40 hover:shadow-[0_8px_30px_rgba(0,0,0,0.05)]"
+              aria-pressed={selected}
+              className={`group text-left rounded-2xl border p-5 flex flex-col transition-all duration-200 hover:-translate-y-0.5 ${
+                selected ? "border-accent bg-accent-soft" : "border-line bg-paper hover:border-accent/50 hover:shadow-[0_8px_30px_rgba(0,0,0,0.06)]"
               }`}
             >
-              <div className="flex items-start justify-between gap-3">
-                <div className="flex items-center gap-2.5 min-w-0">
-                  {c.emoji && <span className="text-2xl leading-none">{c.emoji}</span>}
-                  <div className="min-w-0">
-                    <div className="font-bold text-[1.05rem] flex items-center gap-2 flex-wrap">
-                      {c.title}
-                      {c.badge && (
-                        <span className="text-[0.68rem] font-semibold px-1.5 py-0.5 rounded-full bg-ink text-white">
-                          {c.badge}
-                        </span>
-                      )}
-                    </div>
+              <div className="flex items-start gap-2.5 min-w-0">
+                {c.emoji && <span className="text-2xl leading-none shrink-0">{c.emoji}</span>}
+                <div className="min-w-0 flex-1">
+                  <div className="font-bold text-[1.05rem] flex items-center gap-2 flex-wrap">
+                    {c.title}
+                    {c.badge && (
+                      <span className="text-[0.68rem] font-semibold px-1.5 py-0.5 rounded-full bg-ink text-white">
+                        {c.badge}
+                      </span>
+                    )}
                   </div>
+                  {c.feat && <p className="text-sm text-sub mt-2">{c.feat}</p>}
+                  {c.rec && <p className="text-sm text-accent-ink mt-1.5">👍 {c.rec}</p>}
+                  {c.note && <p className="text-xs text-sub/80 mt-1.5">※ {c.note}</p>}
                 </div>
-                {c.price && (
-                  <span className="shrink-0 text-accent font-bold num-label">{c.price}</span>
-                )}
               </div>
-              {c.feat && <p className="text-sm text-sub mt-2">{c.feat}</p>}
-              {c.rec && <p className="text-sm text-accent-ink mt-1.5">👍 {c.rec}</p>}
-              {c.note && <p className="text-xs text-sub/80 mt-1.5">※ {c.note}</p>}
+
+              <div className="mt-4 pt-3 border-t border-line/70 flex items-center justify-between gap-2">
+                {c.price ? (
+                  <span className="text-accent font-extrabold num-label">{c.price}</span>
+                ) : (
+                  <span className="text-xs text-sub">눌러서 선택</span>
+                )}
+                <span
+                  className={`inline-flex items-center gap-1 text-sm font-semibold transition-all ${
+                    selected
+                      ? "text-accent"
+                      : "text-ink/55 group-hover:text-accent group-hover:gap-2"
+                  }`}
+                >
+                  {selected ? "선택됨 ✓" : "선택 →"}
+                </span>
+              </div>
             </button>
           );
         })}
       </div>
+      {cards.some((c) => c.price) && (
+        <p className="mt-3 text-xs text-sub">
+          ※ 표시 금액은 공급가(VAT 별도) 기준이며, 마지막 결과에서 VAT 포함 최종가로 합산됩니다.
+        </p>
+      )}
     </div>
   );
 }
@@ -334,19 +355,15 @@ function Result({ S, onReset, phone, kakao }: { S: EstimateState; onReset: () =>
               1년 무상 A/S
             </span>
           </div>
-          <p className="mt-3 text-on-dark-sub text-sm">예상 시공 금액 (VAT 별도, 범위)</p>
-          <div className="mt-1 flex items-end gap-2">
-            <span className="text-4xl md:text-5xl font-extrabold num-label tracking-tight">
-              {r.min.toLocaleString()}
+          <p className="mt-3 text-on-dark-sub text-sm">예상 시공 금액 · VAT 포함</p>
+          <div className="mt-1 flex items-end gap-1.5">
+            <span className="text-5xl md:text-6xl font-extrabold num-label tracking-tight">
+              {r.vatP.toLocaleString()}
             </span>
-            <span className="text-on-dark-sub mb-1">~</span>
-            <span className="text-4xl md:text-5xl font-extrabold num-label tracking-tight">
-              {r.max.toLocaleString()}
-            </span>
-            <span className="text-on-dark-sub mb-1.5 ml-0.5">만원</span>
+            <span className="text-on-dark-sub mb-2 ml-0.5 text-lg">만원</span>
           </div>
           <p className="mt-3 text-xs text-on-dark-sub">
-            VAT 포함 약 {won(r.vatP)} · 실측 후 최종 확정됩니다.
+            부가세 10% 포함 최종 예상가입니다. 실측 후 확정됩니다.
           </p>
         </div>
         <div className="px-6 md:px-8 py-6">
@@ -357,10 +374,21 @@ function Result({ S, onReset, phone, kakao }: { S: EstimateState; onReset: () =>
               <span className="font-semibold text-right">{v}</span>
             </div>
           ))}
-          <div className="flex items-baseline gap-3 py-2.5 mt-1">
-            <span className="text-sm text-sub w-16 shrink-0">공급가</span>
-            <span className="flex-1" />
-            <span className="font-semibold num-label">약 {won(r.p)}</span>
+
+          {/* 금액 산출 내역 */}
+          <div className="mt-4 rounded-2xl bg-soft p-4">
+            <div className="flex items-baseline justify-between py-1.5 text-sm">
+              <span className="text-sub">공급가</span>
+              <span className="num-label">{won(r.p)}</span>
+            </div>
+            <div className="flex items-baseline justify-between py-1.5 text-sm border-b border-line">
+              <span className="text-sub">부가세 (10%)</span>
+              <span className="num-label">{won(r.vatP - r.p)}</span>
+            </div>
+            <div className="flex items-baseline justify-between pt-3 pb-1">
+              <span className="font-bold">합계 (VAT 포함)</span>
+              <span className="text-xl font-extrabold num-label text-accent">{won(r.vatP)}</span>
+            </div>
           </div>
         </div>
       </div>
