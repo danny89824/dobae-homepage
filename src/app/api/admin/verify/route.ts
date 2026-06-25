@@ -4,11 +4,11 @@ export const dynamic = "force-dynamic";
 
 // 비밀번호 검증 (백오피스 로그인용)
 export async function POST(req: Request) {
-  const pw = process.env.ADMIN_PASSWORD;
+  const pw = process.env.ADMIN_PASSWORD?.trim();
   let given = "";
   try {
     const body = (await req.json()) as { password?: string };
-    given = body.password || "";
+    given = (body.password || "").trim();
   } catch {
     given = "";
   }

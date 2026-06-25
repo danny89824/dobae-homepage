@@ -1,0 +1,15 @@
+﻿node.exe : <claude-code-hint v="1" type="plugin" value="vercel@claude-plugins-official" />
+At C:\Users\zipan\AppData\Roaming\npm\vercel.ps1:24 char:5
++     & "node$exe"  "$basedir/node_modules/vercel/dist/vc.js" $args
++     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (<claude-code-hi...ns-official" />:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+Vercel CLI 54.17.0 (Node.js 24.14.0)
+Retrieving project…
+Deploying ryans-projects-1211e2d9/dobae-homepage
+Uploading [--------------------] (0.0B/565B)
+Uploading [====================] (565.0B/565B)
+  Inspect         https://vercel.com/ryans-projects-1211e2d9/dobae-homepage/8CWV6JZBYepgnZ91Casr2hnMaX3C
+  Production      https://dobae-homepage-mqmg7rdh1-ryans-projects-1211e2d9.vercel.app
+Building…

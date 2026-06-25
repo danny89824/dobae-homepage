@@ -5,10 +5,10 @@ import type { SiteContent } from "@/lib/content-types";
 export const dynamic = "force-dynamic";
 
 function authed(req: Request): boolean {
-  const pw = process.env.ADMIN_PASSWORD;
+  const pw = process.env.ADMIN_PASSWORD?.trim();
   if (!pw) return false; // 비밀번호 미설정 시 저장 차단
-  const given = req.headers.get("x-admin-password");
-  return given === pw;
+  const given = req.headers.get("x-admin-password")?.trim();
+  return !!given && given === pw;
 }
 
 // 현재 콘텐츠 조회 (공개 콘텐츠라 인증 불필요)
