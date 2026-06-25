@@ -228,6 +228,26 @@ function Editor({ pw, onLogout }: { pw: string; onLogout: () => void }) {
           />
         </Section>
 
+        {/* 고객 후기 */}
+        <Section title="고객 후기" desc="홈 후기 섹션·별점에 표시">
+          <Repeater
+            items={content.reviews}
+            onChange={(reviews) => set({ reviews })}
+            blank={() => ({ name: "", space: "", rating: 5, body: "" })}
+            itemLabel={(it) => it.name || "새 후기"}
+            render={(it, s) => (
+              <div className="grid gap-3">
+                <div className="grid sm:grid-cols-[1fr_1fr_90px] gap-3">
+                  <Field label="고객 표기" value={it.name} onChange={(v) => s({ name: v })} hint="예: 송파 김○○" />
+                  <Field label="공간" value={it.space} onChange={(v) => s({ space: v })} hint="예: 아파트 32평 · 거실" />
+                  <Field label="별점(1~5)" value={it.rating} onChange={(v) => s({ rating: Math.min(5, Math.max(1, Number(v) || 5)) })} />
+                </div>
+                <Field label="후기 내용" value={it.body} onChange={(v) => s({ body: v })} textarea />
+              </div>
+            )}
+          />
+        </Section>
+
         {/* FAQ */}
         <Section title="자주 묻는 질문" desc="홈 FAQ 아코디언">
           <Repeater

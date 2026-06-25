@@ -23,6 +23,12 @@ export interface Faq {
   q: string;
   a: string;
 }
+export interface ReviewItem {
+  name: string;     // 고객 표기 (예: 송파 김○○)
+  space: string;    // 공간 (예: 아파트 32평 · 거실)
+  rating: number;   // 1~5
+  body: string;     // 후기 본문
+}
 export interface PaperType {
   key: string;
   name: string;
@@ -54,6 +60,7 @@ export interface SiteContent {
   regions: string[];
   cases: CaseItem[];
   process: ProcessStep[];
+  reviews: ReviewItem[];
   faq: Faq[];
   paperTypes: PaperType[];
 }

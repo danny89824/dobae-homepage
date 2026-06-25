@@ -1,23 +1,29 @@
 import Link from "next/link";
+import Image from "next/image";
 import FaqAccordion from "@/components/FaqAccordion";
 import PortfolioSlider from "@/components/PortfolioSlider";
+import Reviews from "@/components/Reviews";
+import TrustStats from "@/components/TrustStats";
+import { FaqJsonLd } from "@/components/JsonLd";
 import { getContent } from "@/lib/content-store";
 import { telHref } from "@/lib/content-types";
 
 export default async function Home() {
   const c = await getContent();
-  const { hero, site, trust, regions, cases, process, faq } = c;
+  const { hero, site, trust, regions, cases, process, reviews, faq } = c;
 
   return (
     <>
       {/* ===== HERO ===== */}
       <section className="relative min-h-[92vh] flex items-end overflow-hidden">
         <div className="absolute inset-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
+          <Image
             src={hero.image}
             alt="정성껏 도배를 마친 따뜻한 거실"
-            className="w-full h-full object-cover kenburns"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover kenburns"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/25" />
         </div>
@@ -41,14 +47,7 @@ export default async function Home() {
             </Link>
           </div>
 
-          <div className="reveal reveal-delay-4 mt-12 flex flex-wrap gap-x-8 gap-y-3 border-t border-white/20 pt-6 max-w-2xl">
-            {trust.map((t) => (
-              <div key={t.label} className="flex items-baseline gap-2">
-                <span className="text-2xl md:text-3xl font-extrabold num-label">{t.value}</span>
-                <span className="text-xs md:text-sm text-white/70">{t.label}</span>
-              </div>
-            ))}
-          </div>
+          <TrustStats items={trust} />
         </div>
       </section>
 
@@ -175,6 +174,11 @@ export default async function Home() {
         </div>
       </section>
 
+      {/* ===== 고객 후기 ===== */}
+      <div className="bg-soft">
+        <Reviews items={reviews} />
+      </div>
+
       {/* ===== FAQ ===== */}
       <section className="py-20 md:py-28">
         <div className="container-x max-w-3xl">
@@ -187,6 +191,8 @@ export default async function Home() {
           </div>
         </div>
       </section>
+
+      <FaqJsonLd faq={faq} />
 
       {/* ===== 최종 CTA ===== */}
       <section className="bg-dark text-on-dark py-20 md:py-28">
