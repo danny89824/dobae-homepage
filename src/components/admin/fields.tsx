@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import type { SectionHead } from "@/lib/content-types";
 
 export function Field({
   label, value, onChange, textarea, placeholder, hint, mono,
@@ -54,6 +55,29 @@ export function Section({
       </div>
       {children}
     </section>
+  );
+}
+
+// 섹션 제목(라벨/제목/설명) 편집기 — 여러 섹션에서 재사용
+export function HeadEditor({
+  value,
+  onChange,
+  noSub,
+}: {
+  value: SectionHead;
+  onChange: (v: SectionHead) => void;
+  noSub?: boolean;
+}) {
+  return (
+    <div className="grid gap-3">
+      <div className="grid sm:grid-cols-[150px_1fr] gap-3">
+        <Field label="라벨(영문)" value={value.eyebrow} onChange={(v) => onChange({ ...value, eyebrow: v })} hint="예: Portfolio" />
+        <Field label="제목" value={value.heading} onChange={(v) => onChange({ ...value, heading: v })} />
+      </div>
+      {!noSub && (
+        <Field label="설명" value={value.sub} onChange={(v) => onChange({ ...value, sub: v })} textarea />
+      )}
+    </div>
   );
 }
 

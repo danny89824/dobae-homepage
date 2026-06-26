@@ -1,4 +1,4 @@
-import type { ReviewItem } from "@/lib/content-types";
+import type { ReviewItem, SectionHead } from "@/lib/content-types";
 
 function Stars({ rating }: { rating: number }) {
   const r = Math.max(0, Math.min(5, rating));
@@ -21,7 +21,7 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
-export default function Reviews({ items }: { items: ReviewItem[] }) {
+export default function Reviews({ items, head }: { items: ReviewItem[]; head: SectionHead }) {
   if (!items?.length) return null;
   const avg =
     items.reduce((s, r) => s + (r.rating || 0), 0) / items.length;
@@ -31,13 +31,9 @@ export default function Reviews({ items }: { items: ReviewItem[] }) {
       <div className="container-x">
         <div className="flex items-end justify-between gap-4 reveal">
           <div>
-            <p className="eyebrow num-label">Reviews</p>
-            <h2 className="text-3xl md:text-4xl font-bold mt-2.5">
-              먼저 다녀간 분들의 이야기
-            </h2>
-            <p className="text-sub mt-3 max-w-lg">
-              과장 없이, 받은 그대로. 도배청년단과 함께한 집들의 후기입니다.
-            </p>
+            <p className="eyebrow num-label">{head.eyebrow}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mt-2.5">{head.heading}</h2>
+            <p className="text-sub mt-3 max-w-lg">{head.sub}</p>
           </div>
           <div className="hidden sm:flex flex-col items-end shrink-0">
             <div className="flex items-center gap-2">

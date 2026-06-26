@@ -20,6 +20,25 @@ function newest<T extends { uploadedAt: Date | string }>(blobs: T[]): T | undefi
     .sort((a, b) => new Date(b.uploadedAt).getTime() - new Date(a.uploadedAt).getTime())[0];
 }
 
+function isPlainObject(v: unknown): v is Record<string, unknown> {
+  return typeof v === "object" && v !== null && !Array.isArray(v);
+}
+
+// 기본값 위에 저장값을 깊게 병합 — 구버전 Blob에 없는 새 키는 기본값으로 채워
+// admin이 항상 완전한 콘텐츠를 받도록 한다(배열·원시값은 저장값 우선).
+function deepMerge<T>(base: T, override: unknown): T {
+  if (!isPlainObject(base) || !isPlainObject(override)) {
+    return (override === undefined ? base : (override as T));
+  }
+  const out: Record<string, unknown> = { ...base };
+  for (const key of Object.keys(base)) {
+    if (key in override) {
+      out[key] = deepMerge((base as Record<string, unknown>)[key], override[key]);
+    }
+  }
+  return out as T;
+}
+
 // 요청 단위 캐시 — 레이아웃/페이지가 같은 요청에서 한 번만 fetch
 export const getContent = cache(async (): Promise<SiteContent> => {
   if (!hasBlob()) return DEFAULT_CONTENT;
@@ -31,7 +50,7 @@ export const getContent = cache(async (): Promise<SiteContent> => {
     const res = await fetch(latest.url, { cache: "no-store" });
     if (!res.ok) return DEFAULT_CONTENT;
     const data = (await res.json()) as Partial<SiteContent>;
-    return { ...DEFAULT_CONTENT, ...data };
+    return deepMerge(DEFAULT_CONTENT, data);
   } catch {
     return DEFAULT_CONTENT;
   }

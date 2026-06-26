@@ -63,4 +63,60 @@ export const DEFAULT_CONTENT: SiteContent = {
     { key: "silk", name: "실크 벽지", badge: "고급 · 관리 편함", feat: "표면 코팅으로 오염과 스크래치에 강하고 닦아서 관리할 수 있습니다.", best: "직접 거주하는 집 · 아이/반려동물 가정", price: "24평 기준 175만원대~" },
     { key: "wide", name: "광폭 합지", badge: "넓은 폭 · 깔끔", feat: "폭이 넓어 이음매가 적고 합지보다 매끈한 마감을 냅니다.", best: "합지의 가성비 + 깔끔함을 원할 때", price: "상담 시 안내" },
   ],
+
+  // ── 홈 "Our Standard" 다크 섹션 ──
+  standard: {
+    eyebrow: "Our Standard",
+    heading: "도배에 없던 기준을, 우리가 만듭니다",
+    sub: "화려한 약속 대신, 당연한 것을 당연하게. 도배청년단이 일하는 세 가지 방식입니다.",
+    pillars: [
+      { no: "01", title: "가격을 먼저 공개합니다", desc: "전화로 캐묻지 않아도 됩니다. 간편견적으로 예상 금액을 먼저 확인하고 시작하세요. 정찰제에 가까운 투명한 기준." },
+      { no: "02", title: "책임을 문서로 남깁니다", desc: "시공 후 1년 무상 A/S로 책임집니다. 말이 아니라 보증으로, 끝까지 함께합니다." },
+      { no: "03", title: "직접 고용한 팀이 합니다", desc: "하도급으로 넘기지 않습니다. 자체 교육을 받은 청년 시공단이 처음부터 끝까지 직접 시공합니다." },
+    ],
+  },
+
+  // ── 홈 섹션 제목 ──
+  homeHeads: {
+    portfolio: { eyebrow: "Portfolio", heading: "서울과 경기, 2,000곳의 바탕", sub: "같은 집도 도배 하나로 이렇게 달라집니다. 도배청년단이 다녀간 공간들." },
+    process: { eyebrow: "Process", heading: "복잡할 것 없습니다. 여섯 걸음", sub: "간편견적부터 1년 무상 A/S까지, 처음부터 끝까지 투명하게." },
+    reviews: { eyebrow: "Reviews", heading: "먼저 다녀간 분들의 이야기", sub: "과장 없이, 받은 그대로. 도배청년단과 함께한 집들의 후기입니다." },
+    faq: { eyebrow: "FAQ", heading: "자주 묻는 질문", sub: "" },
+  },
+
+  // ── 홈 전환 동선·최종 CTA ──
+  homeCta: {
+    finder: { eyebrow: "Wallpaper Finder", title: "어떤 도배지가 우리 집에 맞을까?", sub: "1분 진단으로 벽지 종류·등급·컬러 무드를 추천받아 보세요.", cta: "도배지 찾기 시작 →" },
+    estimate: { eyebrow: "Simple Estimate", title: "전화 없이, 가격부터 확인", sub: "공간과 평형, 벽지만 고르면 예상 금액이 바로 나옵니다.", cta: "간편견적 받기 →" },
+    finalHeading: "우리 집의 첫 바탕, 제대로 시작해 볼까요",
+    finalSub: "가격부터 확인하고, 편하게 상담하세요.",
+  },
+
+  // ── 서브페이지 상단 배너 ──
+  pageHeads: {
+    portfolio: { eyebrow: "Portfolio", heading: "2,000곳의 바탕을 다시 썼습니다", sub: "권역에서 진행한 실제 시공 사례입니다." },
+    guide: { eyebrow: "Guide", heading: "도배, 알고 시작하면 쉽습니다", sub: "벽지 종류부터 시공 과정까지. 우리 집에 맞는 선택을 돕는 기본 안내입니다." },
+    about: { eyebrow: "About", heading: "도배의 바른 기준을 만드는 사람들", sub: "도배는 보이지 않는 바탕부터 시작됩니다. 도배청년단은 그 바탕을 정직하게 만들기 위해, 가격을 먼저 공개하고 책임을 문서로 남기며 직접 고용한 팀으로 시공합니다." },
+  },
+
+  // ── 도배 안내 페이지 ──
+  guide: {
+    wallpaperHead: { eyebrow: "Wallpaper", heading: "도배지 종류", sub: "크게 합지·실크·광폭합지로 나뉩니다. 사용 목적과 예산에 따라 골라보세요." },
+    processHead: { eyebrow: "Process", heading: "시공 과정 6단계", sub: "간편견적부터 1년 무상 A/S까지, 투명하게 진행합니다." },
+    promoTitle: "어떤 게 우리 집에 맞을지 모르겠다면?",
+    promoSub: "1분 진단으로 맞춤 도배지를 추천받아 보세요.",
+  },
+
+  // ── 회사소개 페이지 ──
+  about: {
+    whyHead: { eyebrow: "Why 도배청년단", heading: "믿고 맡길 수 있는 이유", sub: "" },
+    strengths: [
+      { title: "하도급 없는 직접 고용", desc: "외주로 넘기지 않습니다. 자체 교육을 받은 청년 시공단이 처음부터 끝까지 직접 시공해 품질을 책임집니다." },
+      { title: "영업배상책임보험 가입", desc: "혹시 모를 시공 중 사고에 대비해 보험에 가입되어 있어, 안심하고 맡기실 수 있습니다." },
+      { title: "1년 무상 A/S", desc: "시공 후 1년간 무상 A/S로 끝까지 책임집니다. 카카오채널로 간편하게 접수하세요." },
+      { title: "투명한 가격 기준", desc: "전화로 캐묻지 않아도 간편견적으로 예상 금액을 먼저 확인할 수 있습니다." },
+    ],
+    contactHead: { eyebrow: "Contact", heading: "상담 안내", sub: "비대면 실측으로 방문 부담 없이 진행합니다." },
+    contactNote: "가격이 궁금하면 간편견적, 어떤 벽지가 맞을지 고민이면 도배지 찾기로.",
+  },
 };

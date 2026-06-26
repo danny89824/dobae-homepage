@@ -53,6 +53,70 @@ export interface HeroContent {
   image: string;
 }
 
+// ── 섹션 카피(제목/문구) 편집용 ──────────────────────────────
+export interface SectionHead {
+  eyebrow: string;
+  heading: string;
+  sub: string;
+}
+export interface Pillar {
+  no: string;
+  title: string;
+  desc: string;
+}
+export interface CtaCard {
+  eyebrow: string;
+  title: string;
+  sub: string;
+  cta: string;
+}
+export interface Strength {
+  title: string;
+  desc: string;
+}
+
+// 홈 "Our Standard" 다크 섹션
+export interface StandardSection {
+  eyebrow: string;
+  heading: string;
+  sub: string;
+  pillars: Pillar[];
+}
+// 홈 섹션 제목들
+export interface HomeHeads {
+  portfolio: SectionHead;
+  process: SectionHead;
+  reviews: SectionHead;
+  faq: SectionHead;
+}
+// 홈 전환 동선·최종 CTA
+export interface HomeCta {
+  finder: CtaCard;
+  estimate: CtaCard;
+  finalHeading: string;
+  finalSub: string;
+}
+// 서브페이지 상단 배너
+export interface PageHeads {
+  portfolio: SectionHead;
+  guide: SectionHead;
+  about: SectionHead;
+}
+// 도배 안내 페이지 섹션
+export interface GuideContent {
+  wallpaperHead: SectionHead;
+  processHead: SectionHead;
+  promoTitle: string;
+  promoSub: string;
+}
+// 회사소개 페이지
+export interface AboutContent {
+  whyHead: SectionHead;
+  strengths: Strength[];
+  contactHead: SectionHead;
+  contactNote: string;
+}
+
 export interface SiteContent {
   site: SiteInfo;
   hero: HeroContent;
@@ -63,6 +127,13 @@ export interface SiteContent {
   reviews: ReviewItem[];
   faq: Faq[];
   paperTypes: PaperType[];
+  // ── 신규: 섹션 카피 전면 편집 ──
+  standard: StandardSection;
+  homeHeads: HomeHeads;
+  homeCta: HomeCta;
+  pageHeads: PageHeads;
+  guide: GuideContent;
+  about: AboutContent;
 }
 
 // 전화번호 → tel: href

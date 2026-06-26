@@ -8,17 +8,16 @@ export const metadata: Metadata = {
 };
 
 export default async function PortfolioPage() {
-  const { cases: CASES, regions: REGIONS } = await getContent();
+  const { cases: CASES, regions: REGIONS, pageHeads } = await getContent();
+  const head = pageHeads.portfolio;
   return (
     <>
       <section className="pt-28 md:pt-32 pb-10 bg-soft border-b border-line">
         <div className="container-x">
-          <p className="eyebrow num-label">Portfolio</p>
-          <h1 className="text-3xl md:text-5xl font-extrabold mt-2 tracking-tight">
-            2,000곳의 바탕을 다시 썼습니다
-          </h1>
+          <p className="eyebrow num-label">{head.eyebrow}</p>
+          <h1 className="text-3xl md:text-5xl font-extrabold mt-2 tracking-tight">{head.heading}</h1>
           <p className="text-sub mt-3 max-w-xl text-[1.05rem]">
-            {REGIONS.join(" · ")} 권역에서 진행한 실제 시공 사례입니다.
+            {REGIONS.join(" · ")} {head.sub}
           </p>
         </div>
       </section>

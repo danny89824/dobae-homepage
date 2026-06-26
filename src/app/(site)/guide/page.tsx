@@ -8,18 +8,14 @@ export const metadata: Metadata = {
 };
 
 export default async function GuidePage() {
-  const { paperTypes: PAPER_TYPES, process: PROCESS } = await getContent();
+  const { paperTypes: PAPER_TYPES, process: PROCESS, pageHeads, guide } = await getContent();
   return (
     <>
       <section className="pt-28 md:pt-32 pb-10 bg-soft border-b border-line">
         <div className="container-x">
-          <p className="eyebrow num-label">Guide</p>
-          <h1 className="text-3xl md:text-5xl font-extrabold mt-2 tracking-tight">
-            도배, 알고 시작하면 쉽습니다
-          </h1>
-          <p className="text-sub mt-3 max-w-xl text-[1.05rem]">
-            벽지 종류부터 시공 과정까지. 우리 집에 맞는 선택을 돕는 기본 안내입니다.
-          </p>
+          <p className="eyebrow num-label">{pageHeads.guide.eyebrow}</p>
+          <h1 className="text-3xl md:text-5xl font-extrabold mt-2 tracking-tight">{pageHeads.guide.heading}</h1>
+          <p className="text-sub mt-3 max-w-xl text-[1.05rem]">{pageHeads.guide.sub}</p>
         </div>
       </section>
 
@@ -27,11 +23,9 @@ export default async function GuidePage() {
       <section className="py-16 md:py-24">
         <div className="container-x">
           <div className="max-w-2xl reveal">
-            <p className="eyebrow num-label">Wallpaper</p>
-            <h2 className="text-2xl md:text-3xl font-bold mt-2.5">도배지 종류</h2>
-            <p className="text-sub mt-3">
-              크게 합지·실크·광폭합지로 나뉩니다. 사용 목적과 예산에 따라 골라보세요.
-            </p>
+            <p className="eyebrow num-label">{guide.wallpaperHead.eyebrow}</p>
+            <h2 className="text-2xl md:text-3xl font-bold mt-2.5">{guide.wallpaperHead.heading}</h2>
+            <p className="text-sub mt-3">{guide.wallpaperHead.sub}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-5 mt-10">
@@ -52,8 +46,8 @@ export default async function GuidePage() {
 
           <div className="mt-8 rounded-2xl bg-accent-soft border border-accent/20 p-6 md:p-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 reveal">
             <div>
-              <p className="font-bold text-lg text-accent-ink">어떤 게 우리 집에 맞을지 모르겠다면?</p>
-              <p className="text-accent-ink/80 text-sm mt-1">1분 진단으로 맞춤 도배지를 추천받아 보세요.</p>
+              <p className="font-bold text-lg text-accent-ink">{guide.promoTitle}</p>
+              <p className="text-accent-ink/80 text-sm mt-1">{guide.promoSub}</p>
             </div>
             <Link href="/finder" className="btn btn-accent shrink-0">도배지 찾기 →</Link>
           </div>
@@ -64,9 +58,9 @@ export default async function GuidePage() {
       <section className="bg-soft py-16 md:py-24">
         <div className="container-x">
           <div className="max-w-2xl reveal">
-            <p className="eyebrow num-label">Process</p>
-            <h2 className="text-2xl md:text-3xl font-bold mt-2.5">시공 과정 6단계</h2>
-            <p className="text-sub mt-3">간편견적부터 1년 무상 A/S까지, 투명하게 진행합니다.</p>
+            <p className="eyebrow num-label">{guide.processHead.eyebrow}</p>
+            <h2 className="text-2xl md:text-3xl font-bold mt-2.5">{guide.processHead.heading}</h2>
+            <p className="text-sub mt-3">{guide.processHead.sub}</p>
           </div>
 
           <ol className="mt-10 grid gap-4">

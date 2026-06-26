@@ -10,7 +10,7 @@ import { telHref } from "@/lib/content-types";
 
 export default async function Home() {
   const c = await getContent();
-  const { hero, site, trust, regions, cases, process, reviews, faq } = c;
+  const { hero, site, trust, regions, cases, process, reviews, faq, standard, homeHeads, homeCta } = c;
 
   return (
     <>
@@ -55,26 +55,19 @@ export default async function Home() {
       <section className="bg-dark text-on-dark py-20 md:py-28">
         <div className="container-x">
           <div className="max-w-2xl reveal">
-            <p className="eyebrow !text-gold">Our Standard</p>
-            <h2 className="text-3xl md:text-4xl font-bold mt-3 leading-tight">
-              도배에 없던 기준을, <br className="hidden sm:block" />
-              우리가 만듭니다
+            <p className="eyebrow !text-gold">{standard.eyebrow}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mt-3 leading-tight whitespace-pre-line">
+              {standard.heading}
             </h2>
-            <p className="text-on-dark-sub mt-4 text-[1.05rem]">
-              화려한 약속 대신, 당연한 것을 당연하게. 도배청년단이 일하는 세 가지 방식입니다.
-            </p>
+            <p className="text-on-dark-sub mt-4 text-[1.05rem]">{standard.sub}</p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-px mt-12 bg-white/10 rounded-2xl overflow-hidden">
-            {[
-              { n: "01", t: "가격을 먼저 공개합니다", d: "전화로 캐묻지 않아도 됩니다. 간편견적으로 예상 금액을 먼저 확인하고 시작하세요. 정찰제에 가까운 투명한 기준." },
-              { n: "02", t: "책임을 문서로 남깁니다", d: "시공 후 1년 무상 A/S로 책임집니다. 말이 아니라 보증으로, 끝까지 함께합니다." },
-              { n: "03", t: "직접 고용한 팀이 합니다", d: "하도급으로 넘기지 않습니다. 자체 교육을 받은 청년 시공단이 처음부터 끝까지 직접 시공합니다." },
-            ].map((b, i) => (
-              <div key={b.n} className={`bg-dark p-7 md:p-8 reveal reveal-delay-${i + 1}`}>
-                <span className="num-label text-gold/80 text-sm font-semibold">{b.n}</span>
-                <h3 className="text-xl font-bold mt-3">{b.t}</h3>
-                <p className="text-on-dark-sub mt-3 leading-relaxed text-[0.95rem]">{b.d}</p>
+            {standard.pillars.map((b, i) => (
+              <div key={b.no} className={`bg-dark p-7 md:p-8 reveal reveal-delay-${i + 1}`}>
+                <span className="num-label text-gold/80 text-sm font-semibold">{b.no}</span>
+                <h3 className="text-xl font-bold mt-3">{b.title}</h3>
+                <p className="text-on-dark-sub mt-3 leading-relaxed text-[0.95rem]">{b.desc}</p>
               </div>
             ))}
           </div>
@@ -86,13 +79,9 @@ export default async function Home() {
         <div className="container-x">
           <div className="flex items-end justify-between gap-4 reveal">
             <div>
-              <p className="eyebrow num-label">Portfolio</p>
-              <h2 className="text-3xl md:text-4xl font-bold mt-2.5">
-                서울과 경기, 2,000곳의 바탕
-              </h2>
-              <p className="text-sub mt-3 max-w-lg">
-                같은 집도 도배 하나로 이렇게 달라집니다. 도배청년단이 다녀간 공간들.
-              </p>
+              <p className="eyebrow num-label">{homeHeads.portfolio.eyebrow}</p>
+              <h2 className="text-3xl md:text-4xl font-bold mt-2.5">{homeHeads.portfolio.heading}</h2>
+              <p className="text-sub mt-3 max-w-lg">{homeHeads.portfolio.sub}</p>
             </div>
             <Link href="/portfolio" className="hidden sm:inline-flex link-underline font-semibold shrink-0">
               전체 사례 보기 →
@@ -117,15 +106,13 @@ export default async function Home() {
             href="/finder"
             className="group relative rounded-3xl bg-accent-soft border border-accent/20 p-8 md:p-10 overflow-hidden reveal"
           >
-            <p className="eyebrow">Wallpaper Finder</p>
-            <h3 className="text-2xl md:text-3xl font-bold mt-3 text-accent-ink">
-              어떤 도배지가 <br /> 우리 집에 맞을까?
+            <p className="eyebrow">{homeCta.finder.eyebrow}</p>
+            <h3 className="text-2xl md:text-3xl font-bold mt-3 text-accent-ink whitespace-pre-line">
+              {homeCta.finder.title}
             </h3>
-            <p className="text-accent-ink/80 mt-3 max-w-xs">
-              1분 진단으로 벽지 종류·등급·컬러 무드를 추천받아 보세요.
-            </p>
+            <p className="text-accent-ink/80 mt-3 max-w-xs">{homeCta.finder.sub}</p>
             <span className="inline-flex items-center gap-1 mt-6 font-semibold text-accent-ink group-hover:gap-2 transition-all">
-              도배지 찾기 시작 →
+              {homeCta.finder.cta}
             </span>
             <span className="absolute -right-6 -bottom-6 text-[8rem] opacity-10 select-none">🎨</span>
           </Link>
@@ -134,15 +121,13 @@ export default async function Home() {
             href="/estimate"
             className="group relative rounded-3xl bg-dark text-on-dark p-8 md:p-10 overflow-hidden reveal reveal-delay-1"
           >
-            <p className="eyebrow !text-gold">Simple Estimate</p>
-            <h3 className="text-2xl md:text-3xl font-bold mt-3">
-              전화 없이, <br /> 가격부터 확인
+            <p className="eyebrow !text-gold">{homeCta.estimate.eyebrow}</p>
+            <h3 className="text-2xl md:text-3xl font-bold mt-3 whitespace-pre-line">
+              {homeCta.estimate.title}
             </h3>
-            <p className="text-on-dark-sub mt-3 max-w-xs">
-              공간과 평형, 벽지만 고르면 예상 금액이 바로 나옵니다.
-            </p>
+            <p className="text-on-dark-sub mt-3 max-w-xs">{homeCta.estimate.sub}</p>
             <span className="inline-flex items-center gap-1 mt-6 font-semibold group-hover:gap-2 transition-all">
-              간편견적 받기 →
+              {homeCta.estimate.cta}
             </span>
             <span className="absolute -right-4 -bottom-8 text-[8rem] opacity-10 select-none">💰</span>
           </Link>
@@ -153,13 +138,9 @@ export default async function Home() {
       <section className="bg-soft py-20 md:py-28">
         <div className="container-x">
           <div className="max-w-2xl reveal">
-            <p className="eyebrow num-label">Process</p>
-            <h2 className="text-3xl md:text-4xl font-bold mt-2.5">
-              복잡할 것 없습니다. 여섯 걸음
-            </h2>
-            <p className="text-sub mt-3">
-              간편견적부터 1년 무상 A/S까지, 처음부터 끝까지 투명하게.
-            </p>
+            <p className="eyebrow num-label">{homeHeads.process.eyebrow}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mt-2.5">{homeHeads.process.heading}</h2>
+            <p className="text-sub mt-3">{homeHeads.process.sub}</p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-12">
@@ -176,15 +157,15 @@ export default async function Home() {
 
       {/* ===== 고객 후기 ===== */}
       <div className="bg-soft">
-        <Reviews items={reviews} />
+        <Reviews items={reviews} head={homeHeads.reviews} />
       </div>
 
       {/* ===== FAQ ===== */}
       <section className="py-20 md:py-28">
         <div className="container-x max-w-3xl">
           <div className="text-center reveal">
-            <p className="eyebrow num-label">FAQ</p>
-            <h2 className="text-3xl md:text-4xl font-bold mt-2.5">자주 묻는 질문</h2>
+            <p className="eyebrow num-label">{homeHeads.faq.eyebrow}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mt-2.5">{homeHeads.faq.heading}</h2>
           </div>
           <div className="mt-10 reveal">
             <FaqAccordion items={faq} />
@@ -197,14 +178,12 @@ export default async function Home() {
       {/* ===== 최종 CTA ===== */}
       <section className="bg-dark text-on-dark py-20 md:py-28">
         <div className="container-x text-center reveal">
-          <h2 className="text-3xl md:text-5xl font-extrabold leading-tight">
-            우리 집의 첫 바탕,
-            <br />
-            제대로 시작해 볼까요
+          <h2 className="text-3xl md:text-5xl font-extrabold leading-tight whitespace-pre-line">
+            {homeCta.finalHeading}
           </h2>
           <p className="text-on-dark-sub mt-5 max-w-md mx-auto">
             {regions.join(" · ")} 시공 가능. <br className="sm:hidden" />
-            가격부터 확인하고, 편하게 상담하세요.
+            {homeCta.finalSub}
           </p>
           <div className="mt-8 flex flex-wrap gap-3 justify-center">
             <Link href="/estimate" className="btn btn-accent !px-8 text-base">
