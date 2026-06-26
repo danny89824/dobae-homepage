@@ -3,6 +3,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import type { CaseItem } from "@/lib/content-types";
 
+const AUTOPLAY_MS = 4000; // 자동 슬라이드 간격
+const RESUME_MS = 6000; // 수동 조작 후 자동재생 재개 대기
+
 export default function PortfolioSlider({ items }: { items: CaseItem[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
@@ -10,6 +13,10 @@ export default function PortfolioSlider({ items }: { items: CaseItem[] }) {
 
   // 드래그 상태
   const drag = useRef({ active: false, startX: 0, startLeft: 0, moved: false });
+
+  // 자동 슬라이드 상태
+  const paused = useRef(false);
+  const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const updateArrows = useCallback(() => {
     const el = trackRef.current;
@@ -30,18 +37,50 @@ export default function PortfolioSlider({ items }: { items: CaseItem[] }) {
     };
   }, [updateArrows]);
 
-  const scrollByCards = (dir: 1 | -1) => {
+  const scrollByCards = useCallback((dir: 1 | -1) => {
     const el = trackRef.current;
     if (!el) return;
     const card = el.querySelector("article");
     const step = card ? card.clientWidth + 16 : el.clientWidth * 0.8;
     el.scrollBy({ left: dir * step, behavior: "smooth" });
+  }, []);
+
+  // 자동 슬라이드: 4초마다 다음, 끝이면 처음으로 루프
+  useEffect(() => {
+    if (items.length <= 1) return;
+    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)");
+    if (reduce?.matches) return; // 모션 최소화 설정 시 자동재생 안 함
+
+    const tick = () => {
+      const el = trackRef.current;
+      if (!el || paused.current || document.hidden) return;
+      const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 8;
+      if (atEnd) el.scrollTo({ left: 0, behavior: "smooth" });
+      else scrollByCards(1);
+    };
+    const id = setInterval(tick, AUTOPLAY_MS);
+    return () => clearInterval(id);
+  }, [items.length, scrollByCards]);
+
+  // 수동 조작 후 일정 시간 자동재생 일시정지
+  const pauseTemporarily = useCallback(() => {
+    paused.current = true;
+    if (resumeTimer.current) clearTimeout(resumeTimer.current);
+    resumeTimer.current = setTimeout(() => {
+      paused.current = false;
+    }, RESUME_MS);
+  }, []);
+
+  const handleArrow = (dir: 1 | -1) => {
+    scrollByCards(dir);
+    pauseTemporarily();
   };
 
   // 포인터 드래그로 스크롤
   const onPointerDown = (e: React.PointerEvent) => {
     const el = trackRef.current;
     if (!el) return;
+    paused.current = true; // 드래그 중 자동재생 정지
     drag.current = { active: true, startX: e.clientX, startLeft: el.scrollLeft, moved: false };
     el.setPointerCapture(e.pointerId);
   };
@@ -57,14 +96,23 @@ export default function PortfolioSlider({ items }: { items: CaseItem[] }) {
     const el = trackRef.current;
     if (el?.hasPointerCapture(e.pointerId)) el.releasePointerCapture(e.pointerId);
     drag.current.active = false;
+    pauseTemporarily(); // 드래그 후 잠시 뒤 재개
   };
 
   return (
-    <div className="reveal container-x">
+    <div
+      className="reveal container-x"
+      onMouseEnter={() => {
+        paused.current = true;
+      }}
+      onMouseLeave={() => {
+        paused.current = false;
+      }}
+    >
       {/* 화살표 (데스크톱) */}
       <div className="flex justify-end gap-2 mb-4">
-        <SliderArrow dir="prev" disabled={!canPrev} onClick={() => scrollByCards(-1)} />
-        <SliderArrow dir="next" disabled={!canNext} onClick={() => scrollByCards(1)} />
+        <SliderArrow dir="prev" disabled={!canPrev} onClick={() => handleArrow(-1)} />
+        <SliderArrow dir="next" disabled={!canNext} onClick={() => handleArrow(1)} />
       </div>
 
       <div
