@@ -28,7 +28,6 @@ function StatValue({ value }: { value: string }) {
   const { prefix, target, suffix, decimals } = parse(value);
   const [n, setN] = useState(0);
   const ref = useRef<HTMLSpanElement>(null);
-  const started = useRef(false);
 
   useEffect(() => {
     if (target == null) return;
@@ -43,40 +42,61 @@ function StatValue({ value }: { value: string }) {
       return;
     }
 
-    const run = () => {
-      if (started.current) return;
-      started.current = true;
+    let raf = 0;
+    let cancelled = false;
+    const animate = () => {
       const dur = 1400;
-      let raf = 0;
       let t0 = 0;
       const tick = (t: number) => {
+        if (cancelled) return;
         if (!t0) t0 = t;
         const p = Math.min((t - t0) / dur, 1);
-        const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
-        setN(target * eased);
+        setN(target * (1 - Math.pow(1 - p, 3))); // easeOutCubic
         if (p < 1) raf = requestAnimationFrame(tick);
       };
       raf = requestAnimationFrame(tick);
-      return () => cancelAnimationFrame(raf);
     };
 
     if (!("IntersectionObserver" in window)) {
-      run();
-      return;
+      animate();
+      return () => {
+        cancelled = true;
+        cancelAnimationFrame(raf);
+      };
     }
     const io = new IntersectionObserver(
-      (entries) => entries.forEach((e) => e.isIntersecting && run()),
+      (entries) => {
+        for (const e of entries) {
+          if (e.isIntersecting) {
+            io.unobserve(el);
+            animate();
+            break;
+          }
+        }
+      },
       { threshold: 0.4 }
     );
     io.observe(el);
-    return () => io.disconnect();
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(raf);
+      io.disconnect();
+    };
   }, [target]);
 
+  if (target == null) {
+    return <span ref={ref}>{value}</span>;
+  }
+
+  const animated = `${prefix}${format(n, decimals)}${suffix}`;
+  const finalStr = `${prefix}${format(target, decimals)}${suffix}`;
+
+  // 최종값으로 너비를 미리 예약(보이지 않는 sizer) + 카운트 숫자를 그 위에 우측정렬로 겹쳐
+  // 표시 → 카운트업 중 숫자 너비 변화로 인한 레이아웃 흔들림(특히 모바일 줄바꿈)을 방지.
   return (
-    <span ref={ref}>
-      {prefix}
-      {target == null ? suffix : format(n, decimals)}
-      {target == null ? "" : suffix}
+    <span ref={ref} className="relative inline-block whitespace-nowrap tabular-nums" aria-label={finalStr}>
+      <span className="invisible" aria-hidden>{finalStr}</span>
+      <span className="absolute inset-0 text-right" aria-hidden>{animated}</span>
     </span>
   );
 }
