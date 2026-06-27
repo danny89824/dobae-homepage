@@ -29,12 +29,12 @@ export const DEFAULT_CONTENT: SiteContent = {
   ],
   regions: ["서울 마포", "서울 강남", "서울 송파", "경기 성남", "경기 용인"],
   cases: [
-    { no: "01", title: "햇살 가득한 거실, 웜 베이지로", space: "아파트 32평", wallpaper: "실크 · 일반", region: "서울 송파", img: U("1586023492125-27b2c045efd7"), tag: "거실" },
-    { no: "02", title: "군더더기 없는 화이트 침실", space: "아파트 24평", wallpaper: "실크 · 프리미엄", region: "경기 성남", img: U("1505691938895-1758d7feb511"), tag: "침실" },
-    { no: "03", title: "차분한 그레이지 원룸", space: "오피스텔 7평", wallpaper: "합지 · 전체", region: "서울 강남", img: U("1522708323590-d24dbb6b0267"), tag: "원룸" },
-    { no: "04", title: "딥그린 포인트월 서재", space: "아파트 42평", wallpaper: "실크 · 프리미엄", region: "경기 용인", img: U("1567538096630-e0c55bd6374c"), tag: "포인트월" },
-    { no: "05", title: "내추럴 우드 톤 주방", space: "빌라 24평", wallpaper: "실크 · 일반", region: "서울 마포", img: U("1556909211-36987daf7b4d"), tag: "주방" },
-    { no: "06", title: "임대용 깔끔 합지 시공", space: "아파트 18평", wallpaper: "합지 · 덧방", region: "서울 송파", img: U("1513694203232-719a280e022f"), tag: "임대" },
+    { no: "01", title: "햇살 가득한 거실, 웜 베이지로", space: "아파트 32평", wallpaper: "실크 · 일반", region: "서울 송파", img: U("1586023492125-27b2c045efd7"), images: [U("1586023492125-27b2c045efd7"), U("1567538096630-e0c55bd6374c"), U("1505691938895-1758d7feb511")], tag: "거실" },
+    { no: "02", title: "군더더기 없는 화이트 침실", space: "아파트 24평", wallpaper: "실크 · 프리미엄", region: "경기 성남", img: U("1505691938895-1758d7feb511"), images: [U("1505691938895-1758d7feb511")], tag: "침실" },
+    { no: "03", title: "차분한 그레이지 원룸", space: "오피스텔 7평", wallpaper: "합지 · 전체", region: "서울 강남", img: U("1522708323590-d24dbb6b0267"), images: [U("1522708323590-d24dbb6b0267")], tag: "원룸" },
+    { no: "04", title: "딥그린 포인트월 서재", space: "아파트 42평", wallpaper: "실크 · 프리미엄", region: "경기 용인", img: U("1567538096630-e0c55bd6374c"), images: [U("1567538096630-e0c55bd6374c")], tag: "포인트월" },
+    { no: "05", title: "내추럴 우드 톤 주방", space: "빌라 24평", wallpaper: "실크 · 일반", region: "서울 마포", img: U("1556909211-36987daf7b4d"), images: [U("1556909211-36987daf7b4d")], tag: "주방" },
+    { no: "06", title: "임대용 깔끔 합지 시공", space: "아파트 18평", wallpaper: "합지 · 덧방", region: "서울 송파", img: U("1513694203232-719a280e022f"), images: [U("1513694203232-719a280e022f")], tag: "임대" },
   ],
   process: [
     { no: "01", title: "간편 가견적", desc: "홈페이지에서 공간과 벽지를 고르면 예상 금액을 바로 확인합니다. 전화 없이 가격부터." },

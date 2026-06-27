@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getContent } from "@/lib/content-store";
+import CaseCard from "@/components/CaseCard";
 
 export const metadata: Metadata = {
   title: "시공사례 — 도배청년단이 다녀간 공간",
@@ -26,26 +27,7 @@ export default async function PortfolioPage() {
         <div className="container-x">
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
             {CASES.map((c) => (
-              <article key={c.no} className="reveal group">
-                <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-soft">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={c.img}
-                    alt={c.title}
-                    loading="lazy"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                  <span className="absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-white/90 text-ink">
-                    {c.tag}
-                  </span>
-                </div>
-                <div className="mt-3.5">
-                  <h2 className="font-bold text-lg leading-snug">{c.title}</h2>
-                  <p className="text-sm text-sub mt-1.5">
-                    {c.space} · {c.wallpaper} · {c.region}
-                  </p>
-                </div>
-              </article>
+              <CaseCard key={c.no} item={c} />
             ))}
           </div>
 

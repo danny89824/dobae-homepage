@@ -81,6 +81,75 @@ export function HeadEditor({
   );
 }
 
+// 이미지 URL 여러 장 편집 — 썸네일·순서이동·삭제·추가. 첫 장이 대표(커버).
+export function ImageList({
+  images,
+  onChange,
+}: {
+  images: string[];
+  onChange: (next: string[]) => void;
+}) {
+  const setAt = (i: number, v: string) => {
+    const next = images.slice();
+    next[i] = v;
+    onChange(next);
+  };
+  const remove = (i: number) => onChange(images.filter((_, j) => j !== i));
+  const move = (i: number, dir: -1 | 1) => {
+    const j = i + dir;
+    if (j < 0 || j >= images.length) return;
+    const next = images.slice();
+    [next[i], next[j]] = [next[j], next[i]];
+    onChange(next);
+  };
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="block text-xs font-semibold text-sub">사진 ({images.length}장)</span>
+        <span className="text-[0.7rem] text-sub/70">첫 번째 = 대표(커버) 사진</span>
+      </div>
+      {images.map((url, i) => (
+        <div key={i} className="flex gap-2 items-start">
+          <div className="relative shrink-0">
+            {url ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={url} alt="" className="w-16 h-16 object-cover rounded-lg border border-line bg-soft" />
+            ) : (
+              <div className="w-16 h-16 rounded-lg border border-dashed border-line-2 bg-soft" />
+            )}
+            {i === 0 && (
+              <span className="absolute -top-1.5 -left-1.5 text-[0.6rem] font-bold px-1.5 py-0.5 rounded-full bg-accent text-white">대표</span>
+            )}
+          </div>
+          <input
+            value={url}
+            onChange={(e) => setAt(i, e.target.value)}
+            placeholder="https://… 이미지 URL"
+            className="flex-1 rounded-lg border border-line bg-white px-3 py-2 text-xs font-mono focus:border-accent focus:outline-none"
+          />
+          <div className="flex flex-col gap-1">
+            <div className="flex gap-1">
+              <button type="button" onClick={() => move(i, -1)} disabled={i === 0}
+                className="w-6 h-6 rounded-md border border-line bg-white text-sub text-xs disabled:opacity-30 hover:border-ink">↑</button>
+              <button type="button" onClick={() => move(i, 1)} disabled={i === images.length - 1}
+                className="w-6 h-6 rounded-md border border-line bg-white text-sub text-xs disabled:opacity-30 hover:border-ink">↓</button>
+            </div>
+            <button type="button" onClick={() => remove(i)}
+              className="w-full h-6 rounded-md border border-red-200 bg-white text-red-500 text-xs hover:bg-red-50">삭제</button>
+          </div>
+        </div>
+      ))}
+      <button
+        type="button"
+        onClick={() => onChange([...images, ""])}
+        className="w-full rounded-lg border border-dashed border-line-2 py-2 text-xs font-semibold text-sub hover:border-accent hover:text-accent"
+      >
+        + 사진 추가
+      </button>
+    </div>
+  );
+}
+
 // 리스트(반복) 편집기: 항목 추가/삭제/순서이동
 export function Repeater<T>({
   items, onChange, blank, render, itemLabel,

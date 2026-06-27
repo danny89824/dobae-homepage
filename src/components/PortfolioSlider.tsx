@@ -1,7 +1,7 @@
 "use client";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import type { CaseItem } from "@/lib/content-types";
+import { caseImages, type CaseItem } from "@/lib/content-types";
 
 const AUTOPLAY_MS = 4000; // 자동 슬라이드 간격
 const RESUME_MS = 6000; // 수동 조작 후 자동재생 재개 대기
@@ -139,7 +139,7 @@ export default function PortfolioSlider({ items }: { items: CaseItem[] }) {
             >
               <div className="relative aspect-[4/5] rounded-2xl overflow-hidden bg-soft group pointer-events-none">
                 <Image
-                  src={c.img}
+                  src={caseImages(c)[0] || c.img}
                   alt={c.title}
                   fill
                   draggable={false}
@@ -149,6 +149,11 @@ export default function PortfolioSlider({ items }: { items: CaseItem[] }) {
                 <span className="absolute top-3 left-3 text-xs font-semibold px-2.5 py-1 rounded-full bg-white/90 text-ink">
                   {c.tag}
                 </span>
+                {caseImages(c).length > 1 && (
+                  <span className="absolute bottom-3 right-3 text-xs font-semibold px-2 py-1 rounded-full bg-black/55 text-white num-label">
+                    📷 {caseImages(c).length}
+                  </span>
+                )}
               </div>
               <div className="mt-3.5">
                 <h3 className="font-bold text-[1.05rem] leading-snug">{c.title}</h3>

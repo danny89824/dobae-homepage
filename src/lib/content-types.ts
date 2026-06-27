@@ -11,9 +11,14 @@ export interface CaseItem {
   space: string;
   wallpaper: string;
   region: string;
-  img: string;
+  img: string;          // 대표(커버) 사진 — images[0]와 동기화, 하위호환용
+  images?: string[];    // 사례별 사진 여러 장 (첫 장이 대표)
   tag: string;
 }
+
+// 사례의 사진 목록 — images가 있으면 그것, 없으면 img 단일로 폴백(구버전 호환)
+export const caseImages = (c: Pick<CaseItem, "img" | "images">): string[] =>
+  (c.images && c.images.length ? c.images : c.img ? [c.img] : []).filter(Boolean);
 export interface ProcessStep {
   no: string;
   title: string;

@@ -1,7 +1,8 @@
 "use client";
 import { useEffect, useState } from "react";
 import type { SiteContent } from "@/lib/content-types";
-import { Field, Section, Repeater, HeadEditor } from "./fields";
+import { caseImages } from "@/lib/content-types";
+import { Field, Section, Repeater, HeadEditor, ImageList } from "./fields";
 
 const PW_KEY = "dobae_admin_pw";
 
@@ -344,7 +345,7 @@ function Editor({ pw, onLogout }: { pw: string; onLogout: () => void }) {
             <Repeater
               items={c.cases}
               onChange={(cases) => set({ cases })}
-              blank={() => ({ no: String(c.cases.length + 1).padStart(2, "0"), title: "", space: "", wallpaper: "", region: "", img: "", tag: "" })}
+              blank={() => ({ no: String(c.cases.length + 1).padStart(2, "0"), title: "", space: "", wallpaper: "", region: "", img: "", images: [], tag: "" })}
               itemLabel={(it) => it.title || "새 사례"}
               render={(it, s) => (
                 <div className="grid sm:grid-cols-2 gap-3">
@@ -354,12 +355,11 @@ function Editor({ pw, onLogout }: { pw: string; onLogout: () => void }) {
                   <Field label="벽지" value={it.wallpaper} onChange={(v) => s({ wallpaper: v })} hint="예: 실크 · 일반" />
                   <Field label="지역" value={it.region} onChange={(v) => s({ region: v })} />
                   <Field label="번호" value={it.no} onChange={(v) => s({ no: v })} />
-                  <div className="sm:col-span-2">
-                    <Field label="이미지 URL" value={it.img} onChange={(v) => s({ img: v })} mono />
-                    {it.img && (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img src={it.img} alt="" className="h-24 w-full object-cover rounded-lg border border-line mt-2" />
-                    )}
+                  <div className="sm:col-span-2 rounded-xl border border-line p-3 bg-white">
+                    <ImageList
+                      images={caseImages(it)}
+                      onChange={(imgs) => s({ images: imgs, img: imgs[0] || "" })}
+                    />
                   </div>
                 </div>
               )}

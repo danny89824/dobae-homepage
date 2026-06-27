@@ -2,10 +2,9 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    // 외부 이미지(언스플래시·Vercel Blob)를 next/image로 최적화 허용
+    // 백오피스에서 임의 이미지 URL을 넣을 수 있어 모든 https 호스트 허용
     remotePatterns: [
-      { protocol: "https", hostname: "images.unsplash.com" },
-      { protocol: "https", hostname: "*.public.blob.vercel-storage.com" },
+      { protocol: "https", hostname: "**" },
     ],
   },
 };
