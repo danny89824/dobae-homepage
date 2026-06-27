@@ -5,6 +5,12 @@ const U = (id: string, w = 1200) =>
 
 // 기본 콘텐츠 — Blob 미설정/최초 상태의 폴백. 백오피스 저장 시 덮어씀.
 export const DEFAULT_CONTENT: SiteContent = {
+  theme: {
+    paper: "#ffffff",
+    soft: "#f6f5f2",
+    dark: "#16201d",
+    accent: "#1f5e54",
+  },
   site: {
     slogan: "도배의 바른 기준, 도배청년단",
     sub: "차분하고 따뜻하게, 우리 집의 첫 바탕을 제대로.",

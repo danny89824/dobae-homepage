@@ -2,7 +2,8 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import type { SiteContent } from "@/lib/content-types";
 import { caseImages } from "@/lib/content-types";
-import { Field, Section, Repeater, HeadEditor, ImageList, UploadButton } from "./fields";
+import { DEFAULT_THEME } from "@/lib/theme";
+import { Field, Section, Repeater, HeadEditor, ImageList, UploadButton, ColorField } from "./fields";
 
 const PW_KEY = "dobae_admin_pw";
 
@@ -212,6 +213,25 @@ function Editor({ pw, onLogout }: { pw: string; onLogout: () => void }) {
           {/* ===================== 기본 ===================== */}
           {tab === "basic" && (
             <>
+              <Section title="색상 · 테마" desc="섹션 배경/포인트 색 — 저장 시 전 페이지에 반영됩니다. 글자색은 배경 밝기에 따라 자동 대비.">
+                <div className="grid sm:grid-cols-2 gap-3">
+                  <ColorField label="페이지 기본 배경" value={c.theme.paper} onChange={(v) => set({ theme: { ...c.theme, paper: v } })} hint="밝은 색 권장 (FAQ·카드 등)" />
+                  <ColorField label="밝은 섹션 배경" value={c.theme.soft} onChange={(v) => set({ theme: { ...c.theme, soft: v } })} hint="프로세스·후기 섹션" />
+                  <ColorField label="어두운 섹션 배경" value={c.theme.dark} onChange={(v) => set({ theme: { ...c.theme, dark: v } })} hint="기준·최종 CTA·푸터 / 어두운 색 권장" />
+                  <ColorField label="포인트 색" value={c.theme.accent} onChange={(v) => set({ theme: { ...c.theme, accent: v } })} hint="버튼·강조·링크" />
+                </div>
+                <div className="mt-3 flex items-center gap-3">
+                  <button type="button" onClick={() => set({ theme: { ...DEFAULT_THEME } })} className="text-xs text-sub underline hover:text-ink">
+                    기본 색으로 초기화
+                  </button>
+                  <div className="flex items-center gap-1">
+                    {[c.theme.paper, c.theme.soft, c.theme.dark, c.theme.accent].map((col, i) => (
+                      <span key={i} className="w-6 h-6 rounded-md border border-line" style={{ background: col }} title={col} />
+                    ))}
+                  </div>
+                </div>
+              </Section>
+
               <Section title="사이트 정보" desc="연락처·슬로건 등 기본 정보 (헤더/푸터/전역)">
                 <div className="grid sm:grid-cols-2 gap-3">
                   <Field label="슬로건" value={c.site.slogan} onChange={(v) => set({ site: { ...c.site, slogan: v } })} />

@@ -122,7 +122,16 @@ export interface AboutContent {
   contactNote: string;
 }
 
+// 사이트 전역 색상(섹션 배경/포인트) — CSS 변수로 주입돼 전 페이지에 반영
+export interface ThemeColors {
+  paper: string;  // 페이지 기본 배경
+  soft: string;   // 밝은 섹션 배경 (프로세스·후기 등)
+  dark: string;   // 어두운 섹션 배경 (기준·최종CTA·푸터)
+  accent: string; // 포인트 색 (버튼·강조·링크)
+}
+
 export interface SiteContent {
+  theme: ThemeColors;
   site: SiteInfo;
   hero: HeroContent;
   trust: TrustItem[];

@@ -3,8 +3,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { caseImages, type CaseItem } from "@/lib/content-types";
 
-const AUTOPLAY_MS = 4000; // 자동 슬라이드 간격
-const RESUME_MS = 6000; // 수동 조작 후 자동재생 재개 대기
+const SPEED = 0.7; // 자동 슬라이드 속도(px/frame, ≈42px/s)
+const RESUME_MS = 4000; // 수동 조작 후 자동재생 재개 대기
 
 export default function PortfolioSlider({ items }: { items: CaseItem[] }) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -16,6 +16,7 @@ export default function PortfolioSlider({ items }: { items: CaseItem[] }) {
 
   // 자동 슬라이드 상태
   const paused = useRef(false);
+  const dir = useRef<1 | -1>(1); // 진행 방향(왕복)
   const resumeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const updateArrows = useCallback(() => {
@@ -45,22 +46,37 @@ export default function PortfolioSlider({ items }: { items: CaseItem[] }) {
     el.scrollBy({ left: dir * step, behavior: "smooth" });
   }, []);
 
-  // 자동 슬라이드: 4초마다 다음, 끝이면 처음으로 루프
+  // 자동 슬라이드: 매 프레임 조금씩 부드럽게 이동, 끝에서 방향 반전(좌우 왕복)
   useEffect(() => {
     if (items.length <= 1) return;
-    const reduce = window.matchMedia?.("(prefers-reduced-motion: reduce)");
-    if (reduce?.matches) return; // 모션 최소화 설정 시 자동재생 안 함
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const el = trackRef.current;
+    if (!el) return;
 
-    const tick = () => {
-      const el = trackRef.current;
-      if (!el || paused.current || document.hidden) return;
-      const atEnd = el.scrollLeft >= el.scrollWidth - el.clientWidth - 8;
-      if (atEnd) el.scrollTo({ left: 0, behavior: "smooth" });
-      else scrollByCards(1);
+    let raf = 0;
+    let pos = el.scrollLeft; // 소수점 누적용(scrollLeft는 정수로 반올림되므로 별도 추적)
+    const step = () => {
+      if (!paused.current && !drag.current.active && !document.hidden) {
+        const max = el.scrollWidth - el.clientWidth;
+        if (max > 1) {
+          pos += dir.current * SPEED;
+          if (pos >= max) {
+            pos = max;
+            dir.current = -1;
+          } else if (pos <= 0) {
+            pos = 0;
+            dir.current = 1;
+          }
+          el.scrollLeft = pos;
+        }
+      } else {
+        pos = el.scrollLeft; // 정지 중(호버·드래그·조작) 위치 동기화
+      }
+      raf = requestAnimationFrame(step);
     };
-    const id = setInterval(tick, AUTOPLAY_MS);
-    return () => clearInterval(id);
-  }, [items.length, scrollByCards]);
+    raf = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(raf);
+  }, [items.length]);
 
   // 수동 조작 후 일정 시간 자동재생 일시정지
   const pauseTemporarily = useCallback(() => {
@@ -122,13 +138,12 @@ export default function PortfolioSlider({ items }: { items: CaseItem[] }) {
         onPointerUp={endDrag}
         onPointerCancel={endDrag}
         className="overflow-x-auto no-scrollbar cursor-grab active:cursor-grabbing select-none -mx-1 px-1"
-        style={{ scrollSnapType: "x mandatory" }}
       >
         <div className="flex gap-4 pb-2">
           {items.map((c) => (
             <article
               key={c.no}
-              className="snap-start shrink-0 w-[78vw] xs:w-[60vw] sm:w-[340px]"
+              className="shrink-0 w-[78vw] xs:w-[60vw] sm:w-[340px]"
               onClickCapture={(e) => {
                 // 드래그 직후 클릭 무시
                 if (drag.current.moved) {

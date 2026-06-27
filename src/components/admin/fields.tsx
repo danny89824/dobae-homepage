@@ -106,6 +106,39 @@ export function Field({
   );
 }
 
+// 색상 입력 — 컬러 피커 + hex 텍스트 + 미리보기
+export function ColorField({
+  label, value, onChange, hint,
+}: {
+  label: string;
+  value: string;
+  onChange: (v: string) => void;
+  hint?: string;
+}) {
+  const valid = /^#[0-9a-fA-F]{6}$/.test(value);
+  return (
+    <label className="block">
+      <span className="block text-xs font-semibold text-sub mb-1">{label}</span>
+      <div className="flex items-center gap-2">
+        <input
+          type="color"
+          value={valid ? value : "#000000"}
+          onChange={(e) => onChange(e.target.value)}
+          aria-label={`${label} 색상 선택`}
+          className="w-10 h-9 shrink-0 rounded-lg border border-line bg-white p-0.5 cursor-pointer"
+        />
+        <input
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder="#000000"
+          className="flex-1 rounded-lg border border-line bg-white px-3 py-2 text-sm font-mono focus:border-accent focus:outline-none"
+        />
+      </div>
+      {hint && <span className="block text-[0.7rem] text-sub/70 mt-1">{hint}</span>}
+    </label>
+  );
+}
+
 export function Section({
   title, desc, children,
 }: {

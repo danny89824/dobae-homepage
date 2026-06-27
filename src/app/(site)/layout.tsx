@@ -4,6 +4,7 @@ import ScrollReveal from "@/components/ScrollReveal";
 import FloatingCta from "@/components/FloatingCta";
 import { LocalBusinessJsonLd } from "@/components/JsonLd";
 import { getContent } from "@/lib/content-store";
+import { themeVars } from "@/lib/theme";
 
 // 콘텐츠 저장소를 읽어 헤더/푸터에 반영 — 수정 즉시 반영을 위해 동적 렌더
 export const dynamic = "force-dynamic";
@@ -14,6 +15,8 @@ export default async function SiteLayout({
   const content = await getContent();
   return (
     <>
+      {/* 백오피스에서 설정한 섹션 색상을 CSS 변수로 주입 */}
+      <style dangerouslySetInnerHTML={{ __html: `:root{${themeVars(content.theme)}}` }} />
       <a href="#main" className="skip-link">
         본문 바로가기
       </a>
