@@ -1,6 +1,72 @@
 "use client";
-import React from "react";
+import React, { useRef, useState } from "react";
+import { upload } from "@vercel/blob/client";
 import type { SectionHead } from "@/lib/content-types";
+
+// 파일 1개를 Vercel Blob에 업로드하고 URL 반환 (관리자 비번을 clientPayload로 전달)
+async function uploadImage(file: File, pw: string): Promise<string> {
+  const safe = file.name.replace(/[^\w.\-]/g, "_");
+  const blob = await upload(`uploads/${safe}`, file, {
+    access: "public",
+    handleUploadUrl: "/api/admin/upload",
+    clientPayload: pw,
+  });
+  return blob.url;
+}
+
+// 파일 선택 → 업로드 → URL들을 콜백으로 전달하는 버튼
+export function UploadButton({
+  pw, onUploaded, multiple, label = "사진 업로드",
+}: {
+  pw: string;
+  onUploaded: (urls: string[]) => void;
+  multiple?: boolean;
+  label?: string;
+}) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState("");
+
+  const handle = async (files: FileList | null) => {
+    if (!files || !files.length) return;
+    setBusy(true);
+    setErr("");
+    try {
+      const urls: string[] = [];
+      for (const f of Array.from(files)) {
+        urls.push(await uploadImage(f, pw));
+      }
+      onUploaded(urls);
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "업로드 실패");
+    } finally {
+      setBusy(false);
+      if (inputRef.current) inputRef.current.value = "";
+    }
+  };
+
+  return (
+    <span className="inline-flex items-center gap-2">
+      <button
+        type="button"
+        disabled={busy}
+        onClick={() => inputRef.current?.click()}
+        className="inline-flex items-center gap-1.5 rounded-lg border border-line-2 bg-white px-3 py-2 text-xs font-semibold text-ink hover:border-ink disabled:opacity-50"
+      >
+        {busy ? "업로드 중…" : `📁 ${label}`}
+      </button>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple={multiple}
+        hidden
+        onChange={(e) => handle(e.target.files)}
+      />
+      {err && <span className="text-xs text-red-500">{err}</span>}
+    </span>
+  );
+}
 
 export function Field({
   label, value, onChange, textarea, placeholder, hint, mono,
@@ -85,9 +151,11 @@ export function HeadEditor({
 export function ImageList({
   images,
   onChange,
+  pw,
 }: {
   images: string[];
   onChange: (next: string[]) => void;
+  pw: string;
 }) {
   const setAt = (i: number, v: string) => {
     const next = images.slice();
@@ -139,13 +207,16 @@ export function ImageList({
           </div>
         </div>
       ))}
-      <button
-        type="button"
-        onClick={() => onChange([...images, ""])}
-        className="w-full rounded-lg border border-dashed border-line-2 py-2 text-xs font-semibold text-sub hover:border-accent hover:text-accent"
-      >
-        + 사진 추가
-      </button>
+      <div className="flex flex-wrap items-center gap-2 pt-1">
+        <UploadButton pw={pw} multiple label="사진 업로드" onUploaded={(urls) => onChange([...images, ...urls])} />
+        <button
+          type="button"
+          onClick={() => onChange([...images, ""])}
+          className="rounded-lg border border-dashed border-line-2 px-3 py-2 text-xs font-semibold text-sub hover:border-accent hover:text-accent"
+        >
+          + URL 직접 입력
+        </button>
+      </div>
     </div>
   );
 }
