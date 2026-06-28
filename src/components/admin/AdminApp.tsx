@@ -3,7 +3,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import type { SiteContent } from "@/lib/content-types";
 import { caseImages } from "@/lib/content-types";
 import { DEFAULT_THEME } from "@/lib/theme";
-import { Field, Section, Repeater, HeadEditor, ImageList, UploadButton, ColorField } from "./fields";
+import { Field, Section, Repeater, HeadEditor, ImageList, UploadButton, ColorField, RichTextField } from "./fields";
 
 const PW_KEY = "dobae_admin_pw";
 
@@ -285,7 +285,7 @@ function Editor({ pw, onLogout }: { pw: string; onLogout: () => void }) {
                     <Field label="헤드라인 1줄" value={c.hero.headlineLine1} onChange={(v) => set({ hero: { ...c.hero, headlineLine1: v } })} />
                     <Field label="헤드라인 2줄" value={c.hero.headlineLine2} onChange={(v) => set({ hero: { ...c.hero, headlineLine2: v } })} />
                   </div>
-                  <Field label="히어로 문구" value={c.hero.sub} onChange={(v) => set({ hero: { ...c.hero, sub: v } })} textarea />
+                  <RichTextField label="히어로 문구" value={c.hero.sub} onChange={(v) => set({ hero: { ...c.hero, sub: v } })} />
                   <div>
                     <div className="flex items-center justify-between mb-1">
                       <span className="block text-xs font-semibold text-sub">배경 이미지</span>
@@ -320,7 +320,7 @@ function Editor({ pw, onLogout }: { pw: string; onLogout: () => void }) {
                           <Field label="번호" value={it.no} onChange={(v) => s({ no: v })} />
                           <Field label="제목" value={it.title} onChange={(v) => s({ title: v })} />
                         </div>
-                        <Field label="설명" value={it.desc} onChange={(v) => s({ desc: v })} textarea />
+                        <RichTextField label="설명" value={it.desc} onChange={(v) => s({ desc: v })} />
                       </div>
                     )}
                   />
@@ -398,7 +398,7 @@ function Editor({ pw, onLogout }: { pw: string; onLogout: () => void }) {
                         <Field label="공간" value={it.space} onChange={(v) => s({ space: v })} hint="예: 아파트 32평 · 거실" />
                         <Field label="별점(1~5)" value={it.rating} onChange={(v) => s({ rating: Math.min(5, Math.max(1, Number(v) || 5)) })} />
                       </div>
-                      <Field label="후기 내용" value={it.body} onChange={(v) => s({ body: v })} textarea />
+                      <RichTextField label="후기 내용" value={it.body} onChange={(v) => s({ body: v })} />
                     </div>
                   )}
                 />
@@ -413,7 +413,7 @@ function Editor({ pw, onLogout }: { pw: string; onLogout: () => void }) {
                   render={(it, s) => (
                     <div className="grid gap-3">
                       <Field label="질문" value={it.q} onChange={(v) => s({ q: v })} />
-                      <Field label="답변" value={it.a} onChange={(v) => s({ a: v })} textarea />
+                      <RichTextField label="답변" value={it.a} onChange={(v) => s({ a: v })} hint="굵게·색·크기·가운데정렬 지원 · 줄바꿈 그대로 반영" />
                     </div>
                   )}
                 />
@@ -479,7 +479,7 @@ function Editor({ pw, onLogout }: { pw: string; onLogout: () => void }) {
                       <Field label="이름" value={it.name} onChange={(v) => s({ name: v })} />
                       <Field label="배지" value={it.badge} onChange={(v) => s({ badge: v })} hint="예: 가성비 · 종이" />
                       <div className="sm:col-span-2">
-                        <Field label="설명" value={it.feat} onChange={(v) => s({ feat: v })} textarea />
+                        <RichTextField label="설명" value={it.feat} onChange={(v) => s({ feat: v })} />
                       </div>
                       <Field label="추천 용도" value={it.best} onChange={(v) => s({ best: v })} />
                       <Field label="가격대" value={it.price} onChange={(v) => s({ price: v })} />
@@ -511,7 +511,7 @@ function Editor({ pw, onLogout }: { pw: string; onLogout: () => void }) {
                         <Field label="번호" value={it.no} onChange={(v) => s({ no: v })} />
                         <Field label="제목" value={it.title} onChange={(v) => s({ title: v })} />
                       </div>
-                      <Field label="설명" value={it.desc} onChange={(v) => s({ desc: v })} textarea />
+                      <RichTextField label="설명" value={it.desc} onChange={(v) => s({ desc: v })} />
                     </div>
                   )}
                 />
@@ -537,7 +537,7 @@ function Editor({ pw, onLogout }: { pw: string; onLogout: () => void }) {
                     render={(it, s) => (
                       <div className="grid gap-3">
                         <Field label="제목" value={it.title} onChange={(v) => s({ title: v })} />
-                        <Field label="설명" value={it.desc} onChange={(v) => s({ desc: v })} textarea />
+                        <RichTextField label="설명" value={it.desc} onChange={(v) => s({ desc: v })} />
                       </div>
                     )}
                   />

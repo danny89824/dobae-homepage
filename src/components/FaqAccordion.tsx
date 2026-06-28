@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import type { Faq } from "@/lib/content-types";
+import RichText from "@/components/RichText";
 
 export default function FaqAccordion({ items }: { items: Faq[] }) {
   const [open, setOpen] = useState<number | null>(0);
@@ -30,7 +31,7 @@ export default function FaqAccordion({ items }: { items: Faq[] }) {
               }`}
             >
               <div className="overflow-hidden">
-                <p className="text-sub leading-relaxed pb-6 pr-10">{f.a}</p>
+                <RichText html={f.a} className="text-sub leading-relaxed pb-6 pr-10" />
               </div>
             </div>
           </div>

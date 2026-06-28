@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getContent } from "@/lib/content-store";
+import RichText from "@/components/RichText";
 
 export const metadata: Metadata = {
   title: "도배 안내 — 도배지 종류와 시공 과정",
@@ -35,7 +36,7 @@ export default async function GuidePage() {
                   {p.badge}
                 </span>
                 <h3 className="text-xl font-bold mt-4">{p.name}</h3>
-                <p className="text-sub text-sm mt-2.5 leading-relaxed">{p.feat}</p>
+                <RichText html={p.feat} className="text-sub text-sm mt-2.5 leading-relaxed" />
                 <div className="mt-4 pt-4 border-t border-line space-y-1.5">
                   <p className="text-sm"><b className="text-ink">추천</b> <span className="text-sub">{p.best}</span></p>
                   <p className="text-sm"><b className="text-ink">가격대</b> <span className="text-accent num-label">{p.price}</span></p>
@@ -69,7 +70,7 @@ export default async function GuidePage() {
                 <span className="num-label text-accent font-extrabold text-2xl shrink-0 w-10">{p.no}</span>
                 <div>
                   <h3 className="font-bold text-lg">{p.title}</h3>
-                  <p className="text-sub mt-1.5 leading-relaxed">{p.desc}</p>
+                  <RichText html={p.desc} className="text-sub mt-1.5 leading-relaxed" />
                 </div>
               </li>
             ))}

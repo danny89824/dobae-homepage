@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getContent } from "@/lib/content-store";
 import { telHref } from "@/lib/content-types";
+import RichText from "@/components/RichText";
 
 export const metadata: Metadata = {
   title: "회사소개 — 도배청년단",
@@ -50,7 +51,7 @@ export default async function AboutPage() {
                 <h3 className="text-lg font-bold flex items-center gap-2">
                   <span className="text-gold">—</span> {x.title}
                 </h3>
-                <p className="text-on-dark-sub mt-2 leading-relaxed">{x.desc}</p>
+                <RichText html={x.desc} className="text-on-dark-sub mt-2 leading-relaxed" />
               </div>
             ))}
           </div>

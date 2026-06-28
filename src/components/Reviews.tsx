@@ -1,4 +1,5 @@
 import type { ReviewItem, SectionHead } from "@/lib/content-types";
+import RichText from "@/components/RichText";
 
 function Stars({ rating }: { rating: number }) {
   const r = Math.max(0, Math.min(5, rating));
@@ -51,9 +52,11 @@ export default function Reviews({ items, head }: { items: ReviewItem[]; head: Se
               className={`card-lift rounded-2xl bg-paper border border-line p-6 flex flex-col reveal reveal-delay-${(i % 3) + 1}`}
             >
               <Stars rating={r.rating} />
-              <blockquote className="mt-3 text-[0.97rem] leading-relaxed text-ink-2 flex-1">
-                “{r.body}”
-              </blockquote>
+              <RichText
+                as="div"
+                html={r.body}
+                className="mt-3 text-[0.97rem] leading-relaxed text-ink-2 flex-1"
+              />
               <figcaption className="mt-5 pt-4 border-t border-line">
                 <span className="font-bold">{r.name}</span>
                 <span className="block text-sm text-sub mt-0.5">{r.space}</span>

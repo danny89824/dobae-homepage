@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import FaqAccordion from "@/components/FaqAccordion";
 import PortfolioSlider from "@/components/PortfolioSlider";
+import RichText from "@/components/RichText";
 import Reviews from "@/components/Reviews";
 import TrustStats from "@/components/TrustStats";
 import { FaqJsonLd } from "@/components/JsonLd";
@@ -35,9 +36,7 @@ export default async function Home() {
             <br />
             {hero.headlineLine2}
           </h1>
-          <p className="reveal reveal-delay-2 mt-5 text-lg md:text-xl text-white/85 max-w-xl">
-            {hero.sub}
-          </p>
+          <RichText html={hero.sub} className="reveal reveal-delay-2 mt-5 text-lg md:text-xl text-white/85 max-w-xl" />
           <div className="reveal reveal-delay-3 mt-8 flex flex-wrap gap-3">
             <Link href="/estimate" className="btn btn-accent !px-7 text-base">
               간편견적 받기 →
@@ -67,7 +66,7 @@ export default async function Home() {
               <div key={b.no} className={`bg-dark p-7 md:p-8 reveal reveal-delay-${i + 1}`}>
                 <span className="num-label text-gold/80 text-sm font-semibold">{b.no}</span>
                 <h3 className="text-xl font-bold mt-3">{b.title}</h3>
-                <p className="text-on-dark-sub mt-3 leading-relaxed text-[0.95rem]">{b.desc}</p>
+                <RichText html={b.desc} className="text-on-dark-sub mt-3 leading-relaxed text-[0.95rem]" />
               </div>
             ))}
           </div>
@@ -148,7 +147,7 @@ export default async function Home() {
               <div key={p.no} className={`rounded-2xl bg-paper border border-line p-6 reveal reveal-delay-${(i % 3) + 1}`}>
                 <span className="num-label text-accent font-extrabold text-2xl">{p.no}</span>
                 <h3 className="font-bold text-lg mt-2">{p.title}</h3>
-                <p className="text-sub text-sm mt-2 leading-relaxed">{p.desc}</p>
+                <RichText html={p.desc} className="text-sub text-sm mt-2 leading-relaxed" />
               </div>
             ))}
           </div>
