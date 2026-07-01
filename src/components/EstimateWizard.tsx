@@ -446,7 +446,8 @@ function LeadForm({ S, bizPhone, bizKakao }: { S: EstimateState; bizPhone: strin
         <p className="text-2xl">✅</p>
         <p className="font-bold text-lg mt-2">상담 신청이 접수됐어요</p>
         <p className="text-sub text-sm mt-1">
-          빠른 시간 내에 연락드리겠습니다. 더 빠른 상담은 전화·카카오채널로도 가능해요.
+          빠른 시간 내에 연락드리겠습니다. 영업시간 외 접수는 다음 영업일 오전에 연락드려요.
+          더 빠른 상담은 전화·카카오채널로도 가능합니다.
         </p>
         <div className="mt-4 flex flex-wrap gap-2 justify-center">
           <a href={telHref(bizPhone)} className="btn btn-primary !py-2.5 !px-5 text-sm">

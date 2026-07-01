@@ -4,12 +4,7 @@ const SITE_URL = "https://dobaeym.com";
 
 // 지역 사업자(도배/인테리어 시공) 구조화 데이터 — 로컬 검색 노출 강화
 export function LocalBusinessJsonLd({ content }: { content: SiteContent }) {
-  const { site, regions, reviews } = content;
-  const ratings = reviews?.filter((r) => r.rating > 0) ?? [];
-  const avg =
-    ratings.length > 0
-      ? ratings.reduce((s, r) => s + r.rating, 0) / ratings.length
-      : null;
+  const { site, regions } = content;
 
   const data = {
     "@context": "https://schema.org",
@@ -27,16 +22,6 @@ export function LocalBusinessJsonLd({ content }: { content: SiteContent }) {
       addressCountry: "KR",
       addressRegion: "서울·경기",
     },
-    ...(avg
-      ? {
-          aggregateRating: {
-            "@type": "AggregateRating",
-            ratingValue: avg.toFixed(1),
-            reviewCount: ratings.length,
-            bestRating: 5,
-          },
-        }
-      : {}),
     sameAs: site.kakaoChannel ? [site.kakaoChannel] : [],
   };
 

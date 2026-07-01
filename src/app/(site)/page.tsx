@@ -3,7 +3,6 @@ import Image from "next/image";
 import FaqAccordion from "@/components/FaqAccordion";
 import PortfolioSlider from "@/components/PortfolioSlider";
 import RichText from "@/components/RichText";
-import Reviews from "@/components/Reviews";
 import TrustStats from "@/components/TrustStats";
 import { FaqJsonLd } from "@/components/JsonLd";
 import { getContent } from "@/lib/content-store";
@@ -11,7 +10,7 @@ import { telHref } from "@/lib/content-types";
 
 export default async function Home() {
   const c = await getContent();
-  const { hero, site, trust, regions, cases, process, reviews, faq, standard, homeHeads, homeCta } = c;
+  const { hero, site, trust, regions, cases, process, faq, standard, homeHeads, homeCta } = c;
 
   return (
     <>
@@ -61,9 +60,12 @@ export default async function Home() {
             <p className="text-on-dark-sub mt-4 text-[1.05rem]">{standard.sub}</p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-px mt-12 bg-white/10 rounded-2xl overflow-hidden">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 mt-12">
             {standard.pillars.map((b, i) => (
-              <div key={b.no} className={`bg-dark p-7 md:p-8 reveal reveal-delay-${i + 1}`}>
+              <div
+                key={b.no}
+                className={`rounded-2xl border border-white/12 bg-white/[0.03] p-7 md:p-8 reveal reveal-delay-${(i % 3) + 1}`}
+              >
                 <span className="num-label text-gold/80 text-sm font-semibold">{b.no}</span>
                 <h3 className="text-xl font-bold mt-3">{b.title}</h3>
                 <RichText html={b.desc} className="text-on-dark-sub mt-3 leading-relaxed text-[0.95rem]" />
@@ -153,11 +155,6 @@ export default async function Home() {
           </div>
         </div>
       </section>
-
-      {/* ===== 고객 후기 ===== */}
-      <div className="bg-soft">
-        <Reviews items={reviews} head={homeHeads.reviews} />
-      </div>
 
       {/* ===== FAQ ===== */}
       <section className="py-20 md:py-28">
