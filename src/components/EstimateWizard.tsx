@@ -404,25 +404,40 @@ function LeadForm({ S, bizPhone, bizKakao }: { S: EstimateState; bizPhone: strin
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
   const [region, setRegion] = useState("");
+  const [consent, setConsent] = useState(false);
+  const [hp, setHp] = useState(""); // 허니팟(봇 차단) — 사용자에겐 숨김
   const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
 
-  const submit = (e: React.FormEvent) => {
+  const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !phone) return;
-    const lead = {
-      name, phone, region,
-      estimate: S,
-      quote: compute(S),
-      at: new Date().toISOString(),
-    };
-    try {
-      const prev = JSON.parse(localStorage.getItem("dobae_leads") || "[]");
-      prev.push(lead);
-      localStorage.setItem("dobae_leads", JSON.stringify(prev));
-    } catch {
-      /* noop */
+    if (!name || !phone || sending) return;
+    if (!consent) {
+      setError("개인정보 수집·이용에 동의해 주세요.");
+      return;
     }
-    setSent(true);
+    setSending(true);
+    setError("");
+    try {
+      const res = await fetch("/api/leads", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          name, phone, region, consent, hp,
+          source: "estimate",
+          estimate: S,
+          quote: compute(S),
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) throw new Error(data.error || "접수에 실패했습니다.");
+      setSent(true);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "접수에 실패했습니다. 잠시 후 다시 시도해 주세요.");
+    } finally {
+      setSending(false);
+    }
   };
 
   if (sent) {
@@ -466,12 +481,38 @@ function LeadForm({ S, bizPhone, bizKakao }: { S: EstimateState; bizPhone: strin
           className="rounded-xl border border-line bg-paper px-4 py-3 text-sm focus:border-accent focus:outline-none"
         />
       </div>
-      <button type="submit" className="btn btn-accent w-full mt-4">
-        상담 신청하기
+
+      {/* 허니팟 — 사람에겐 보이지 않음(봇이 채우면 서버에서 무시) */}
+      <input
+        type="text" tabIndex={-1} autoComplete="off"
+        value={hp} onChange={(e) => setHp(e.target.value)}
+        aria-hidden="true"
+        style={{ position: "absolute", left: "-9999px", width: 1, height: 1, opacity: 0 }}
+      />
+
+      <label className="flex items-start gap-2 mt-4 text-xs text-sub cursor-pointer">
+        <input
+          type="checkbox" checked={consent}
+          onChange={(e) => setConsent(e.target.checked)}
+          className="mt-0.5 accent-[color:var(--accent,#000)]"
+        />
+        <span>
+          <b className="text-ink">[필수]</b> 상담 진행을 위해 이름·연락처·지역 정보를 수집·이용하는 데 동의합니다.
+          수집한 정보는 상담 목적으로만 사용되며, 목적 달성 후 파기됩니다.{" "}
+          <a href="/privacy" target="_blank" rel="noreferrer" className="underline underline-offset-2">
+            개인정보 처리방침
+          </a>
+        </span>
+      </label>
+
+      {error && <p className="text-xs text-red-600 mt-3">{error}</p>}
+
+      <button
+        type="submit" disabled={sending}
+        className="btn btn-accent w-full mt-4 disabled:opacity-60"
+      >
+        {sending ? "접수 중…" : "상담 신청하기"}
       </button>
-      <p className="text-[0.7rem] text-sub mt-3 text-center">
-        ※ 데모 단계로 입력 정보는 브라우저에만 저장됩니다. (리드 백엔드 연동 예정)
-      </p>
     </form>
   );
 }

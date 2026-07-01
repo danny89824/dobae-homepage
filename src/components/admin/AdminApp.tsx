@@ -176,6 +176,7 @@ function Editor({ pw, onLogout }: { pw: string; onLogout: () => void }) {
             ) : null}
           </div>
           <div className="flex items-center gap-3 shrink-0">
+            <a href="/admin/leads" className="text-sm text-accent font-semibold hover:underline underline-offset-4">상담신청 →</a>
             <a href="/admin/board" className="text-sm text-accent font-semibold hover:underline underline-offset-4">실행보드 →</a>
             <a href="/" target="_blank" rel="noreferrer" className="text-sm text-sub hover:text-ink underline underline-offset-4">사이트 ↗</a>
             <button onClick={onLogout} className="text-sm text-sub hover:text-ink">로그아웃</button>

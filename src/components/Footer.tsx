@@ -70,7 +70,9 @@ export default function Footer({
             도배청년단 · 법인 {site.legal} &nbsp;|&nbsp; © {site.copyrightYear} 도배청년단. All
             rights reserved.
           </p>
-          <p className="opacity-70">도배의 바른 기준</p>
+          <Link href="/privacy" className="opacity-70 hover:opacity-100 underline underline-offset-2">
+            개인정보 처리방침
+          </Link>
         </div>
       </div>
     </footer>
